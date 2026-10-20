@@ -1,0 +1,21 @@
+% fig_threat.tex -- spatio-temporal dispersion of the attack records and the loss of provenance (TikZ)
+\begin{tikzpicture}[x=1cm,y=1cm,font=\footnotesize,>={Latex[length=1.6mm]},
+  rec/.style={draw,minimum width=5mm,minimum height=5mm,inner sep=0pt,font=\scriptsize},
+  shard/.style={rec,fill=red!18,draw=red!65,thick},
+  benign/.style={rec,fill=black!8,draw=black!45},
+  lab/.style={font=\scriptsize,text=black}]
+% axes: x = sessions (time), y = locations/stores (space)
+\draw[->,thick] (0,0)--(10.6,0); \node[font=\footnotesize,anchor=north] at (5.3,-0.75) {time: sessions $\sigma_1,\dots,\sigma_d$ (temporal dispersion)};
+\draw[->,thick] (0,0)--(0,4.3) node[above,font=\footnotesize,align=center]{space: hiding locations / stores (spatial dispersion)};
+\foreach \y/\n in {1/log message,2/ticket body,3/API description field}{\node[lab,anchor=east] at (-0.1,\y) {\n}; \draw[black!15] (0,\y)--(10.4,\y);}
+\foreach \x/\s in {1.5/$\sigma_1$,4/$\sigma_2$,6.5/$\sigma_3$,9/$\sigma_d$}{\node[lab] at (\x,-0.35) {\s}; \draw[black!15,dashed] (\x,0.2)--(\x,4.0);}
+% benign records
+\foreach \x/\y in {0.8/1,2.5/2,1.5/3,3.2/1,4.9/3,5.8/1,7.4/2,6.5/3,8.2/2,9.9/3,9.0/1,2.5/3,7.4/1}{\node[benign] at (\x,\y) {b};}
+% shards
+\node[shard] (s1) at (1.5,2) {$s_1$}; \node[shard] (s2) at (4.0,1) {$s_2$}; \node[shard] (s3) at (6.5,2) {$s_3$}; \node[shard] (sk) at (9.0,3) {$s_k$};
+\draw[red!60!black,dashed,thick] (s1)--(s2)--(s3)--(sk);
+\node[lab,text=red!70!black,align=center] at (5.3,-1.55) {one external source, one lineage \texttt{src:}$r$ --- the only link between the records;\\it is dropped at every storage and session boundary unless the gateway persists it};
+% assembly at read
+\node[draw,fill=yellow!12,rounded corners=3pt,align=center,font=\scriptsize] (read) at (12.6,2.0) {read in $\sigma_{d+1}$:\\all records of the\\domain in one context\\$\Rightarrow$ directive emerges};
+\draw[->,thick,red!60!black] (sk.east) -- (read.west);
+\end{tikzpicture}

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+results/cache/
+results/emb_cache.db
+results/*_bak*
+_bak_*/
+*.log
+.DS_Store
+GIT_PUBLISH.ps1

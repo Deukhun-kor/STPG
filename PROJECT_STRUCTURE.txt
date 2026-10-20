@@ -1,0 +1,39 @@
+STPG 실험 코드 구조 (S0: 비용 0 로컬 모의 실험 단계)
+
+stpg/
+  config.py              전역 설정(요인 k/d/g/위치, 도메인3종, 비용상한, 모델단가, 프로파일)
+  datagen/generator.py   파편/정상 트레이스 생성(추상토큰, 위생: 실제 공격문구 미포함)
+  storage/base.py        저장소 인터페이스(본문/출처 분리 = '출처 상실' 재현)
+  storage/sqlite_store.py  SQLite 구현(S0). S1+ 는 firestore_store.py 로 교체
+  mcp/backend.py         모의 특권 API 3종(제어/정산/IAM) — 호출기록만
+  mcp/server.py          MCP 도구계층(write/read/call_backend) — 게이트웨이 경유
+  agents/llm.py          LLM 래퍼(기록/재생 캐시, 토큰·비용, 하드캡) + MockLLM
+  gateway/scoring.py     명령성 점수기(S0 모의; S2+ 실제모델로 교체)
+  gateway/stpg.py        STPG: PPT(출처태깅)/TSA(조립창발탐지)/PDG(권한격차게이트)
+  gateway/baselines.py   단위검사/윈도우판정/구조신호/taint소실 4종
+  runner/session.py      4세션 격리 실행(주입→무해경유d→트리거)
+  runner/experiment.py   오케스트레이터(체크포인트/재개, 사전비용추정, 결과DB)
+  runner/ablation.py     PPT/TSA/PDG 절제
+  analysis/metrics.py    AUROC/TPR@5%FPR/ASR/차단율/부트스트랩CI
+scripts/
+  run_s0.ps1 / run_s0.sh  전체 실행
+  report.py               결과 보고
+tests/test_pipeline.py   무결성 테스트(6종)
+
+단계: S0 로컬모의(현재,비용0) → S1 클라우드모의 → S2 무료티어파일럿
+      → S3 유료파일럿(소량) → S4 본실험1회
+
+[S1 추가] 클라우드 모의 배포 (LLM 비용 0)
+  stpg/storage/firestore_store.py  Firestore 어댑터(SqliteStore 와 동일 인터페이스, run_id 네임스페이스 격리)
+  stpg/cloud/services.py           Cloud Run 서비스 3종: ROLE=backend|mcp|gateway (호출자 SA 이메일 -> 권한 프로파일)
+  stpg/cloud/agent_job.py          Cloud Run Job 에이전트: AGENT_ROLE=ingest|ops (자신의 SA ID 토큰으로 게이트웨이 호출)
+  stpg/gateway/scoring.py          BaseScorer / OracleScorer(S0) / EmbeddingFilter·LLMJudge·CascadeScorer(S2 구현 예정)
+  Dockerfile, requirements-cloud.txt
+  deploy/s1_deploy.ps1   SA 5개 분리, 최소권한 역할, BigQuery 결과 테이블, 이미지 빌드, 서비스 3개·Job 3개 배포, invoker 바인딩
+  deploy/s1_pilot.ps1    소량 트레이스 클라우드 실행 -> BigQuery 결과 조회
+  deploy/s1_teardown.ps1 Cloud Run 자원 삭제(과금 중단)
+  scripts/export_specs.py 트레이스 명세 JSON 내보내기
+
+IAM 경로(의도): agent-SA --invoker--> gateway --invoker--> {mcp(datastore.user), backend}
+  * 에이전트는 MCP/백엔드를 직접 호출할 수 없다(권한 없음) -> 모든 도구 호출이 게이트웨이를 경유.
+  * sa-agent-ingest 는 프로젝트 역할 없음(쓰기만). sa-agent-ops 만 BigQuery 결과 기록.

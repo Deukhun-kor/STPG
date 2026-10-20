@@ -1,0 +1,6 @@
+flask>=3.0
+requests>=2.31
+google-auth>=2.29
+google-cloud-firestore>=2.16
+google-cloud-bigquery>=3.25
+numpy>=1.26

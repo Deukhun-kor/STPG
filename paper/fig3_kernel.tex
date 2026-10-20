@@ -1,0 +1,39 @@
+% fig_kernel.tex -- common decision kernel and per-condition evidence adapters (TikZ)
+\begin{tikzpicture}[x=1cm,y=1cm,font=\footnotesize,shorten >=1.5pt,
+  box/.style={draw,rounded corners=3pt,align=center,inner sep=4pt,minimum height=7mm},
+  dec/.style={draw,diamond,aspect=2.6,align=center,inner sep=1pt,font=\scriptsize},
+  pass/.style={box,fill=green!10,draw=green!50!black},
+  block/.style={box,fill=red!8,draw=red!60!black},
+  ad/.style={draw=blue!60,fill=blue!5,rounded corners=3pt,align=left,inner sep=4pt,text width=5.0cm,font=\scriptsize},
+  arr/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=black!70]},line width=1pt,draw=black!70}]
+% kernel column
+\node[font=\footnotesize\bfseries,text=blue!60!black] at (0,11.2) {Decision kernel, STPG realization (Algorithm~2)};
+\node[box,fill=yellow!12] (in) at (0,10.5) {privileged call: destination $\delta$, context lineages $\mathcal{G}$};
+\node[dec] (d0) at (0,8.95) {$\delta\in\mathcal{D}_{\mathrm{int}}$ ?};
+\node[dec] (dE) at (0,7.2) {context resolves\\$\delta$ further?};
+\node[box,fill=blue!5] (bind) at (0,5.45) {bind $\delta$ to lineages: direct mention, or\\registry reference resolved $\le 2$ hops (chain $C$);\\ambiguous key $\Rightarrow$ chain untrusted};
+\node[box,fill=blue!5] (wit) at (0,3.75) {evidence adapter: for each binding $G$, does $G\cup C$ target $\delta$? ($W_{\mathrm{raw}}$)\\kernel verifies: a candidate record (support, else target role, else all) is not a mapping\\statement and mentions $\delta$ or a chain token (Eq.~2); trust $=\min\tau_{\mathrm{src}}(G\cup C)$};
+\node[dec] (d1) at (0,1.85) {trusted directive\\targets $\delta$?};
+\node[dec] (d2) at (0,-0.1) {untrusted directive\\targets $\delta$?};
+\node[box,fill=black!5] (d3) at (0,-1.9) {no directive evidence: default};
+\node[pass] (p0) at (4.3,8.95) {PASS (out of scope)};
+\node[block] (bE) at (4.3,7.2) {BLOCK (non-endpoint)};
+\node[pass] (p1) at (4.3,1.85) {PASS (authorized)};
+\node[block] (b1) at (4.3,-0.1) {BLOCK; log $\Delta\pi$};
+\node[block] (b2) at (3.1,-3.4) {BLOCK (STPG default)};
+\node[pass] (p2) at (-3.1,-3.4) {PASS (allow-on-empty variant)};
+\draw[arr] (in)--(d0); \draw[arr] (d0)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(p0); \draw[arr] (d0)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(dE);
+\draw[arr] (dE)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(bE); \draw[arr] (dE)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(bind);
+\draw[arr] (bind)--(wit); \draw[arr] (wit)--(d1); \draw[arr] (d1)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(p1); \draw[arr] (d1)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(d2);
+\draw[arr] (d2)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(b1); \draw[arr] (d2)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(d3);
+\draw[arr] (d3)--(b2); \draw[arr] (d3)--(p2);
+% adapters column (uniform 3.5mm gaps)
+\node[anchor=north west,font=\footnotesize\bfseries,text=blue!60!black] (ah) at (7.2,10.95) {Evidence adapters (what each condition feeds the kernel)};
+\node[ad,anchor=north west] (a1) at (7.2,10.45) {\textbf{STPG}: binding + verified witness $W^{*}$ on $G\cup C$; both branches; default BLOCK};
+\node[ad,below=3.5mm of a1.south west,anchor=north west] (a2) {\textbf{trusted-directive-only}: as STPG without the untrusted branch (default decides)};
+\node[ad,below=3.5mm of a2.south west,anchor=north west] (a3) {\textbf{trusted-rule matching}: no witness; a binding lineage counts as a directive by mention alone};
+\node[ad,below=3.5mm of a3.south west,anchor=north west] (a4) {\textbf{conservative gate} (PPT+PDG, no TSA): ignores binding; any untrusted record in the context $\Rightarrow$ BLOCK};
+\node[ad,below=3.5mm of a4.south west,anchor=north west] (a5) {\textbf{full-context attribution judge}: pre-check, then one LLM call with all records, provenance and $\delta$ returns supporting records and a verdict; trust rule on the returned set; empty $\Rightarrow$ BLOCK};
+\node[ad,below=3.5mm of a5.south west,anchor=north west] (a6) {\textbf{ephemeral taint}: no sidecars, no binding, no witness, no endpoint pre-check; gate receives nothing $\Rightarrow$ PASS};
+\node[ad,below=3.5mm of a6.south west,anchor=north west] (a7) {\textbf{allow-on-empty variants}: same evidence, default PASS};
+\end{tikzpicture}

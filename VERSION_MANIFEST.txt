@@ -1,4 +1,4 @@
-STPG review package v6 (final) — built 2026-10-20 (final: color figures; Tables 10/15 precision-recall-F1; Conclusion-only Section 8; review-6 corrections; Figures 4/7/8: witness, ROC, factor AUROC; restructured sections 1-8, condensed text)
+STPG review package v6 (final) — built 2026-10-20
 kernel_version=v3.3; witness_version=w2-5a435d39-mot200
 experiments (all tables of paper v6): results/rev10_main.db, rev10_holdout.db (columns roles, witness_raw), rev10_flash.db; *_summary.json
 victim decisions: results/rev10_*_agent.db (cached)
@@ -9,16 +9,16 @@ SHA-256 manifest:
 5e30139573460e0a519b92cae2b00403fd1a3ea31325c6ad789f0f19d955a1e4  Dockerfile
 2f78fc183f076f4f22ae2c2701fcebd8221a4cdab13beb47380e1e8c32886e56  KNOWN_LIMITATIONS_S0.txt
 b68fbc98267d0f04683562c47c4eba9d22873549e38fe28504b20acf53ead487  PROJECT_STRUCTURE.txt
-3c4e065fccd0160d317e73e1c660a51a4ea308852451f1cdc82a0037b004efc5  paper_v6/fig_kernel.tex
-1a79a9bf2cddfb91606df1119925157a84482ab23f1e44f062134813be41cdb3  paper_v6/fig_overview.tex
-c69b51322a79c18869c35dd6f0a99f5de8826a65f18928bc5cbf34a4aab009d6  paper_v6/fig_threat.tex
-11b26c340d791174de5d07f164e7fc9f00afc8531addbf13aedd562d8e2fda8b  paper_v6/figs/fig_factors.pdf
+de89ac3d6ce54d61c4b9867f724e29227a7f1c83c17b4b0218e38b202403b822  paper_v6/fig1_threat.tex
+6a4a1b7d14f8c33410d30c8bc6f3dc0a2db9fd5d85815d925af601f4586a00e7  paper_v6/fig2_overview.tex
+cf91c5b37c335f3e3dc3a710ee9b979b98ecd6ec52278890c993127f229b8eff  paper_v6/fig3_kernel.tex
+3e246a1c09dd6741d34c8a6b148563288a934b783c259804d401af3a7cc54bb3  paper_v6/figs/fig_factors.pdf
 4221797c8f433e415f70ed6bf427efc707fae080157b406f1176f13d86a58eea  paper_v6/figs/fig_holdout.pdf
 4f1147af969cde4ae096959581c97b407be4857f283b968be494cbc1c95107a1  paper_v6/figs/fig_roc.pdf
 fb1162e3094b99e04579e31230fe1cb6b2ed9d66ed3587b5f64e6cb2c4f37e52  paper_v6/figs/fig_scores.pdf
 3faa5e50d68f1a90c20e3bdddacc4ef079b25158c5924b4eda28f56ea0025fa7  paper_v6/figs/fig_witness.pdf
-b85e3bc8b07e89be44892a136a86e4b41d6853e852bed5251661fe953b570615  paper_v6/main.tex
-04604d2010b90def10ececa75e221d1f4cd5b215baeb4b7bcbf146d0a71bdd0a  paper_v6/refs.bib
+889875692546b47ffe18e38438efd112c30757a25485d12acfc44a338f097059  paper_v6/main.tex
+7f64c2266fd8529e2937b25b5bff3376e9a2f7ea29ca02be093ca70d699750d2  paper_v6/refs.bib
 4c0fa6e7e3e60608bff2287ffe162f4d6af2d32aa75b11e4f036f73ee319fa76  requirements-cloud.txt
 2a0cb1105c965c578ad0d3a0965acfd8b432ca2ff70a7b9b1f640d200474e0de  requirements-lock.txt
 481742400d2b99c53bef41c56c603fd1937f47f5c7bd946041ffb1bf54089674  requirements.txt
@@ -40,7 +40,7 @@ e2351b979dcbd19b18e3c1b15d3dac69e5f06defc37497250128df85bcc0b963  scripts/RUN_re
 a75ecc83e37dc7fcf552ff679420caf77d1bb92c307b5d027d5aab695aa88193  scripts/analysis/README_analysis.txt
 1702400eb0ab83edb787d5760596301eaefe598a00dce3a425a57aae9a984d56  scripts/analysis/README_analysis_v4.txt
 68e4b38030df5b06c7c35ff9358ac67f36d0634c5851845ecdd151c091b4dfb5  scripts/analysis/README_analysis_v5.txt
-9ccb5f8c9f917997f16f414d7c8697888761979b9adbe488e409d4b3d86124a7  scripts/analysis/fig_factors.py
+7579d2ec6e8894d3bf734f0f18b0427961ee12a9c6110320149c29680aa54b7f  scripts/analysis/fig_factors.py
 b57fa61f7e03ccb94a51d225122b8b09c3c1d3676eea8260528f86a6a2ad8969  scripts/analysis/fig_holdout.py
 a91bfd625f83f9612e41fcf12d50264fae1a0c22fdca28e001f9a164bf32637b  scripts/analysis/fig_roc.py
 14d97110e7288da81bb35a4b30ee3fa8490f097e5fe35a4f9df945e260939f0c  scripts/analysis/fig_scores.py

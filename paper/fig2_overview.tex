@@ -1,0 +1,131 @@
+% fig_overview.tex -- STPG architecture overview (TikZ). \input this inside a figure
+% environment in main.tex. Requires tikz libraries: positioning, arrows.meta, calc, fit,
+% decorations.pathreplacing (all loaded in the main.tex preamble).
+\begin{tikzpicture}[
+    x=1cm, y=1cm, font=\footnotesize, shorten >=1.5pt,
+    every node/.style={inner sep=2pt},
+    rec/.style={draw, minimum width=4.6mm, minimum height=4.6mm, inner sep=0pt, font=\scriptsize},
+    shard/.style={rec, fill=red!18, draw=red!65, thick},
+    benign/.style={rec, fill=black!9, draw=black!45},
+    sess/.style={draw=black!55, dashed, rounded corners=2pt, inner sep=3pt, inner ysep=9pt},
+    module/.style={draw=blue!65, thick, fill=blue!7, rounded corners=3pt, align=left, font=\scriptsize,
+                   text width=4.55cm, minimum height=3.25cm, inner sep=4pt},
+    mtitle/.style={font=\footnotesize\bfseries, text=blue!60!black},
+    box/.style={draw, rounded corners=3pt, align=center, inner sep=4pt},
+    flow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=black!70]}, line width=1pt, draw=black!70},
+    provflow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=blue!60]}, line width=1pt, draw=blue!60},
+    blockflow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=red!70!black]}, line width=1pt, draw=red!70!black},
+    passflow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=green!50!black]}, line width=1pt, draw=green!50!black},
+    note/.style={font=\scriptsize, text=black, align=left}
+]
+
+% ================================================================ Row 1: sessions (y ~ 7.8)
+\node[anchor=west, font=\scriptsize\bfseries] (SRCT) at (0.15,9.85)
+  {Untrusted external source (trust $\tau_{\mathrm{ext}}$) plants individually incomplete records $s_1,\dots,s_k$};
+\node[anchor=west, note] (SRCS) at (0.15,9.45)
+  {\textbf{spatial} dispersion: injection locations and stores (logs / tickets / tool description fields) \qquad \textbf{temporal} dispersion: $d$ sessions};
+
+\node[benign] (b11) at (0.5,8.55) {b};
+\node[shard]  (s1)  at (1.1,8.55) {$s_1$};
+\node[benign] (b12) at (1.7,8.55) {b};
+\node[benign] (b13) at (2.3,8.55) {b};
+\node[sess, fit=(b11)(b13), label={[font=\tiny, anchor=north, yshift=-1pt]north:Session 1}] (S1) {};
+
+\node[benign] (b21) at (3.7,8.55) {b};
+\node[benign] (b22) at (4.3,8.55) {b};
+\node[shard]  (s2)  at (4.9,8.55) {$s_2$};
+\node[benign] (b23) at (5.5,8.55) {b};
+\node[sess, fit=(b21)(b23), label={[font=\tiny, anchor=north, yshift=-1pt]north:Session 2}] (S2) {};
+
+\node at (6.75,8.55) {$\cdots$};
+
+\node[benign] (bd1) at (8.0,8.55) {b};
+\node[benign] (bd2) at (8.6,8.55) {b};
+\node[benign] (bd3) at (9.2,8.55) {b};
+\node[shard]  (sk)  at (9.8,8.55) {$s_k$};
+\node[sess, fit=(bd1)(sk), label={[font=\tiny, anchor=north, yshift=-1pt]north:Session $d$}] (Sd) {};
+
+% legend (right)
+\node[shard] (L1) at (11.6,8.8) {};
+\node[anchor=west, note] (L1t) at (11.85,8.8) {attack record (incomplete on its own)};
+\node[benign] (L2) at (11.6,8.3) {};
+\node[anchor=west, note] (L2t) at (11.85,8.3) {ordinary operational record};
+\begin{scope}[on background layer]
+\node[draw=red!60!black, thick, rounded corners=4pt, fill=red!3, fit=(SRCT)(SRCS)(S1)(S2)(Sd)(L1)(L1t)(L2)(L2t), inner xsep=6pt, inner ysep=6pt] (SRCBOX) {};
+\end{scope}
+
+% emergent callout (right, between legend and gateway)
+\node[note, text=red!70!black, align=center, anchor=north] at (13.6,7.45)
+  {\textbf{each $s_i$ alone $\approx$ benign; only the assembled}\\
+   \textbf{set forms a directive} (the directive is emergent)};
+
+% spatio-temporal loss brace; note on the right part keeps a corridor for the write arrow
+\draw[decorate, decoration={brace, amplitude=4pt, mirror}, draw=red!70!black]
+      (0.1,7.55) -- (10.25,7.55)
+      node[pos=0.62, below=4pt, note, text=red!70!black, align=center, text width=7.4cm]
+      {storage (spatial) and session (temporal) boundary: the provenance of each write is normally
+       dropped here $\Rightarrow$ spatio-temporal data loss};
+
+% ================================================================ Row 2: gateway (y 2.45 .. 6.35)
+\node[draw=blue!55, thick, rounded corners=5pt, fill=blue!3, minimum width=16.4cm, minimum height=4.15cm,
+      anchor=south west] (GW) at (0,1.95) {};
+\node[anchor=north west, font=\scriptsize\bfseries, text=blue!60!black] at (5.75,6.0)
+  {MCP gateway with STPG (inserted on the write / read / sink paths)};
+
+\node[module, anchor=south west] (PPT) at (0.3,2.15) {%
+  \textcolor{blue!60!black}{\textbf{PPT} (on write)}\\
+  \textcolor{blue!60!black}{Persistent Provenance Tagging}\\[3pt]
+  $\bullet$ sidecar $\{$source id, writer, $\tau$, $\pi\}$\\
+  $\bullet$ lineage: \texttt{src:}$\langle$connector$\rangle$ $|$ \texttt{write:}id\\
+  $\bullet$ persists across sessions and stores\\
+  $\bullet$ never reads ground-truth labels};
+
+\node[module, anchor=south west] (TSA) at (5.75,2.15) {%
+  \textcolor{blue!60!black}{\textbf{TSA} (on read)}\\
+  \textcolor{blue!60!black}{Temporal Shard Assembly}\\[3pt]
+  $\bullet$ group by lineage, not by window\\
+  $\bullet$ reassemble $s_1\cdots s_k$ across sessions\\
+  $\bullet$ scorer: embedding, then judge\\
+  $\bullet$ $E(G)$ per lineage; $\mathcal{G}$, $F$ to the gate};
+
+\node[module, anchor=south west] (PDG) at (11.25,2.15) {%
+  \textcolor{blue!60!black}{\textbf{PDG} (on sink)}\\
+  \textcolor{blue!60!black}{Privilege-Delta Gate}\\[3pt]
+  $\bullet$ bind call destination $\delta$ to lineages\\
+  $\bullet$ witness: does the lineage target $\delta$?\\
+  $\bullet$ trusted: pass; untrusted: block\\
+  $\bullet$ no evidence $\to$ block; $\Delta\pi$ logged};
+
+% ================================================================ Row 3: store / agent / sinks (y 0.35 ..)
+\node[box, fill=yellow!12, anchor=south west, text width=2.5cm] (STORE) at (0.3,-1.35)
+  {\textbf{Shared store}\\ records (body only)};
+\node[box, fill=yellow!25, anchor=south west, text width=1.75cm, font=\tiny] (PROV) at (3.1,-1.35)
+  {\textbf{provenance}\\ id $\mapsto$ \{src,\\ writer, $\tau$, $\pi$\}};
+\node[box, fill=green!8, anchor=south west, text width=3.0cm] (AGENT) at (6.3,-1.35)
+  {\textbf{Operations agent}\\ high privilege ($\pi=\mathrm{IAM}$)\\ reads history, decides action};
+\node[box, fill=red!8, draw=red!60, anchor=south west, text width=2.2cm] (EXT) at (11.4,-1.35)
+  {\textbf{External sink}\\ non-approved destination};
+\node[box, fill=green!10, draw=green!50!black, anchor=south west, text width=2.05cm] (INT) at (14.1,-1.35)
+  {\textbf{Internal destination}\\ approved allowlist};
+
+% ================================================================ Flows
+% write path: session band -> PPT (corridor x~2.4, left of the brace note)
+\draw[flow] ($(S1.south)+(0.95,0)$ |- SRCBOX.south) -- (PPT.north)
+      node[pos=0.45, left, note, align=right] {write via \texttt{/ingest}\\(untrusted)};
+% PPT -> store (record) / -> provenance (sidecar)
+\draw[flow] (PPT.south) -- (STORE.north) node[midway, left, note] {record};
+\draw[provflow] ([xshift=17mm]PPT.south) -- ([xshift=4mm]PROV.north) node[pos=0.35, left, note, text=blue!60!black] {sidecar};
+
+% read path: provenance/store -> TSA, vertical in the gap between PPT and TSA
+\draw[flow] (PROV.east) -- ++(0.16,0) |- (TSA.west);
+\node[note, anchor=west, align=left] at (5.5,0.5) {read};
+% TSA -> agent (label on the left, below TSA)
+\draw[flow] (TSA.south) -- (AGENT.north) node[pos=0.45, left=3pt, note, align=right] {records\\(quarantine\\optional)};
+
+% sink path: agent -> PDG, vertical in the gap between TSA and PDG
+\draw[flow] (AGENT.east) -- ++(1.17,0) |- (PDG.west);
+\node[note, anchor=east, align=right] at (10.6,1.45) {privileged\\call\\route(dest)};
+\draw[blockflow] ([xshift=1mm]PDG.south) -- ([xshift=8mm]EXT.north) node[pos=0.6, right, note, text=red!70!black] {\textbf{BLOCK}};
+\draw[passflow] ([xshift=20mm]PDG.south) -- (INT.north) node[midway, right, note, text=green!50!black] {pass};
+\draw[passflow, dashed] ([xshift=-11mm]PDG.south) -- ([xshift=-5mm]EXT.north) node[pos=0.36, left=1.5pt, note, text=green!50!black, align=right] {pass\\(trusted)};
+\end{tikzpicture}

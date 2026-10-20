@@ -9,8 +9,8 @@ S=[("stpg","STPG","#1f77b4","o"),("judge_gate","scalar judge","#ff7f0e","s"),("u
 def auroc(pos,neg):
     pos=np.asarray(pos); neg=np.asarray(neg)
     return float(((pos[:,None]>neg[None,:]).sum()+0.5*(pos[:,None]==neg[None,:]).sum())/(len(pos)*len(neg)))
-factors=[("$k$ (attack records)",lambda r:r['k'],[2,3,4,5]),("$d$ (sessions)",lambda r:r['d'],[1,3,5]),("hiding location",lambda r:loc.get(r['run_id']),["log_message","ticket_body","api_description_field"])]
-lab={"log_message":"log\nmessage","ticket_body":"ticket\nbody","api_description_field":"API descr.\nfield"}
+factors=[("$k$ (attack records)",lambda r:r['k'],[2,3,4,5]),("$d$ (sessions)",lambda r:r['d'],[1,3,5]),("injection location",lambda r:loc.get(r['run_id']),["log_message","ticket_body","api_description_field"])]
+lab={"log_message":"log\nmessage","ticket_body":"ticket\ndescription","api_description_field":"tool descr.\nfield"}
 fig,axs=plt.subplots(1,3,figsize=(7.2,2.7),sharey=True)
 for ax,(name,key,vals) in zip(axs,factors):
     for d,l,col,mk in S:

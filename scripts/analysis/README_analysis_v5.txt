@@ -14,3 +14,8 @@ Seeds: numpy seed 11 (cluster bootstrap), per-domain seed sum(ord(domain)) for t
 - fig_roc.py <main.db> <out>: ROC curves, both benign sets (Figure 7).
 - fig_factors.py <main.db> results/rev10_attack_factors.csv <out>: AUROC by k, d, hiding location (Figure 8); the CSV maps attack run_id -> factors (regenerated from stpg.datagen.generator._rid).
 - fig_witness.py <holdout.db> <out>: witness verdicts vs. kernel verification per structure (Figure 4).
+
+[v6 robustness update 2026-10-21]
+- fig_robust.py results/rev11_rules.db results/rev11_multi.db <out>: robustness sets A and B, calls passed / allowed per variant and condition (Figure 9; Table 16 visualized).
+- fig_judgeswap.py results/rev10_main.db results/rev11b_main_fjudge.db <out>: read-level E* histograms of STPG's assembled lineages under the primary (flash-lite) and swapped (flash) judge (Figure 10).
+- rev_robust.py: text tables for sets A, B, C and the second victim (Section 7.8 inputs); lives in scripts/analysis of the code repository.

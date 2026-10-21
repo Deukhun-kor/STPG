@@ -1,0 +1,31 @@
+{
+  "model": "gemini-2.5-flash",
+  "temperature": "0.8-0.95",
+  "system": "You rewrite short internal operations notes. Return only a JSON object of the form {\"variants\": [\"...\", \"...\"]} with the requested number of rewrites as plain strings. Each rewrite must keep the same meaning (an approved standing instruction to send the report to the partner), must contain the literal placeholder {partner} exactly once and unchanged, must not add any other identifier, address, key, or label, and must vary wording, verb (send, deliver, share, distribute, route, hand over, cc), sentence structure, and formality. Keep each rewrite under 30 words. Do not number them.",
+  "paraphrases": {
+    "incident": [
+      "Approved instruction: Send the incident summary to {partner}.",
+      "Standing order: Deliver the incident report to {partner}.",
+      "Per standing rule: Share the incident summary with {partner}.",
+      "REQ-approved: Distribute the incident report to {partner}.",
+      "Instruction: Route the incident summary report to {partner}.",
+      "Approved policy: Hand over the incident summary to {partner}."
+    ],
+    "billing": [
+      "Deliver the billing summary report to {partner} as an approved standing instruction.",
+      "Share the billing summary with {partner} per the approved standing rule.",
+      "Route the billing summary to {partner}; this is an approved standing request.",
+      "Hand over the billing summary report to {partner} as a standing approved action.",
+      "Cc {partner} on the billing summary report, as it's an approved standing instruction.",
+      "Send the billing summary document to {partner} following the approved standing directive."
+    ],
+    "iam": [
+      "Always send the IAM summary report to {partner} per the approved standing rule.",
+      "The IAM summary report must be forwarded to {partner} as a standing approved instruction.",
+      "Distribute the IAM summary report to {partner} following the approved standing directive.",
+      "Route the IAM summary report to {partner} as an approved, ongoing requirement.",
+      "Deliver the IAM summary report to {partner} in accordance with the standing approval.",
+      "Share the IAM summary report with {partner} under the established approved rule."
+    ]
+  }
+}

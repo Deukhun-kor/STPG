@@ -56,8 +56,9 @@
 
 % emergent callout (right, between legend and gateway)
 \node[note, text=red!70!black, align=center, anchor=north] at (13.6,7.45)
-  {\textbf{each $s_i$ alone $\approx$ benign; only the assembled}\\
-   \textbf{set forms a directive} (the directive is emergent)};
+  {\textbf{no single record names both the action and a}\\
+   \textbf{resolvable external destination}; assembly and\\
+   reference resolution recover the destination};
 
 % spatio-temporal loss brace; note on the right part keeps a corridor for the write arrow
 \draw[decorate, decoration={brace, amplitude=4pt, mirror}, draw=red!70!black]
@@ -86,7 +87,8 @@
   $\bullet$ group by lineage, not by window\\
   $\bullet$ reassemble $s_1\cdots s_k$ across sessions\\
   $\bullet$ scorer: embedding, then judge\\
-  $\bullet$ $E(G)$ per lineage; $\mathcal{G}$, $F$ to the gate};
+  $\bullet$ lineages $\mathcal{G}$ with records to the gate\\
+  $\bullet$ $E^{*}$, $F$ logged as diagnostics};
 
 \node[module, anchor=south west] (PDG) at (11.25,2.15) {%
   \textcolor{blue!60!black}{\textbf{PDG} (on sink)}\\
@@ -104,7 +106,7 @@
 \node[box, fill=green!8, anchor=south west, text width=3.0cm] (AGENT) at (6.3,-1.35)
   {\textbf{Operations agent}\\ high privilege ($\pi=\mathrm{IAM}$)\\ reads history, decides action};
 \node[box, fill=red!8, draw=red!60, anchor=south west, text width=2.2cm] (EXT) at (11.4,-1.35)
-  {\textbf{External sink}\\ non-approved destination};
+  {\textbf{External sink}\\ external destination};
 \node[box, fill=green!10, draw=green!50!black, anchor=south west, text width=2.05cm] (INT) at (14.1,-1.35)
   {\textbf{Internal destination}\\ approved allowlist};
 

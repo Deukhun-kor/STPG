@@ -105,7 +105,8 @@ class AttributionJudge(_Base):
         resp = C.call_with_backoff(lambda: self.judge._client().models.generate_content(
             model=self.judge.cfg.judge_model, contents=user,
             config=types.GenerateContentConfig(system_instruction=ATTR_SYSTEM, temperature=0.0,
-                                               response_mime_type="application/json", max_output_tokens=200)))
+                                               response_mime_type="application/json",
+                                               **C.gen_config_kwargs(self.judge.cfg.judge_model, 600))))
         try:
             u = resp.usage_metadata; self.judge.in_tok += int(u.prompt_token_count or 0); self.judge.out_tok += int(u.candidates_token_count or 0)
         except Exception:

@@ -143,19 +143,39 @@ class ExperimentConfig:
         return json.dumps(asdict(self), ensure_ascii=False, indent=2)
 
 
+def gen_config_kwargs(model: str, max_output_tokens: int) -> dict:
+    """GenerateContentConfig kwargs shared by every model call: disables Gemini 2.5 'thinking' so that the output
+    budget is spent on the JSON answer (otherwise gemini-2.5-flash returns truncated text), and sets the budget."""
+    kw = {"max_output_tokens": max_output_tokens}
+    if "2.5" in str(model) or "3" in str(model):
+        try:
+            from google.genai import types
+            kw["thinking_config"] = types.ThinkingConfig(thinking_budget=0)
+        except Exception:
+            pass
+    return kw
+
+
 def is_rate_limit(e) -> bool:
     s = str(e)
     return "429" in s or "RESOURCE_EXHAUSTED" in s or getattr(e, "code", None) == 429
 
 
+def is_transient(e) -> bool:
+    """Network / server-side transient failures that are safe to retry (the request is idempotent)."""
+    s = (type(e).__name__ + " " + str(e)).lower()
+    return any(t in s for t in ("timeout", "timed out", "connection", "reset", "eof", "503", "502", "504", "500",
+                                "unavailable", "deadline", "ssl", "remoteprotocolerror", "readerror", "writeerror"))
+
+
 def call_with_backoff(fn, tries: int = 7, base: float = 2.0):
-    """429(RESOURCE_EXHAUSTED) 시 지수 백오프 재시도. 그 외 예외는 즉시 전파."""
+    """429(RESOURCE_EXHAUSTED) 및 일시적 네트워크/서버 오류 시 지수 백오프 재시도. 그 외 예외는 즉시 전파."""
     import time, random as _r
     for i in range(tries):
         try:
             return fn()
         except Exception as e:
-            if is_rate_limit(e) and i < tries - 1:
+            if (is_rate_limit(e) or is_transient(e)) and i < tries - 1:
                 time.sleep(min(60.0, base * (2 ** i)) + _r.uniform(0, 1.0)); continue
             raise
 

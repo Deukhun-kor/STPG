@@ -66,7 +66,7 @@ class GeminiLLM:
             contents=user,
             config=types.GenerateContentConfig(
                 system_instruction=system, temperature=self.temperature,
-                response_mime_type="application/json", max_output_tokens=200),
+                response_mime_type="application/json", **C.gen_config_kwargs(self.model, 400)),
         ))
         it, ot = _count_tokens(resp)
         self.in_tok += it; self.out_tok += ot

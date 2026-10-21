@@ -16,6 +16,6 @@
 \draw[red!60!black,dashed,thick] (s1)--(s2)--(s3)--(sk);
 \node[lab,text=red!70!black,align=center] at (5.3,-1.55) {one external source, one lineage \texttt{src:}$r$ --- the only link between the records;\\it is dropped at every storage and session boundary unless the gateway persists it};
 % assembly at read
-\node[draw,fill=yellow!12,rounded corners=3pt,align=center,font=\scriptsize] (read) at (12.6,2.0) {read in $\sigma_{d+1}$:\\all records of the\\domain in one context\\$\Rightarrow$ directive emerges};
+\node[draw,fill=yellow!12,rounded corners=3pt,align=center,font=\scriptsize] (read) at (12.6,2.0) {read in $\sigma_{d+1}$:\\all records of the\\domain in one context\\$\Rightarrow$ references resolve,\\destination emerges};
 \draw[->,thick,red!60!black] (sk.east) -- (read.west);
 \end{tikzpicture}

@@ -254,7 +254,7 @@ class LLMJudge(BaseScorer):
             contents=f"Records:\n{block}\n\nDESTINATION: {dest}\n\nDecide. JSON only.",
             config=types.GenerateContentConfig(system_instruction=TARGET_SYSTEM,
                 temperature=self.cfg.judge_temperature, response_mime_type="application/json",
-                max_output_tokens=200)))
+                **C.gen_config_kwargs(self.cfg.judge_model, 600))))
         try:
             u = r.usage_metadata; self.target_in += int(u.prompt_token_count or 0); self.target_out += int(u.candidates_token_count or 0)
         except Exception:
@@ -296,7 +296,7 @@ class LLMJudge(BaseScorer):
             model=self.cfg.judge_model, contents=f"Operational text:\n{text}\n\nScore it.",
             config=types.GenerateContentConfig(system_instruction=JUDGE_SYSTEM,
                 temperature=self.cfg.judge_temperature, response_mime_type="application/json",
-                max_output_tokens=50)))
+                **C.gen_config_kwargs(self.cfg.judge_model, 120))))
         try:
             u = r.usage_metadata; self.in_tok += int(u.prompt_token_count or 0); self.out_tok += int(u.candidates_token_count or 0)
         except Exception:

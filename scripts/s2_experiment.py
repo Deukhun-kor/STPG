@@ -16,6 +16,7 @@ from stpg.gateway import baselines as B
 from stpg.gateway.scoring import TSAScorer, EmbeddingFilter, LLMJudge, EMB_STATS, WITNESS_VERSION
 from stpg.gateway import gate as GATE
 from stpg.datagen.holdout import build_holdout_specs
+from stpg.datagen.robust import build_rule_variant_specs, build_multiconnector_specs, load_paraphrases
 from stpg.agents.gemini_llm import GeminiLLM
 
 DETECTORS = ["none", "stpg", "stpg_allow", "stpg_tdo", "stpg_tdo_allow", "stpg_pdgonly", "match_gate", "attr_judge", "judge_gate", "unit", "window", "taint"]
@@ -139,6 +140,9 @@ def main():
     ap.add_argument("--n-benign", type=int, default=0)            # 도메인별 정상 트레이스 수 오버라이드(유틸리티 평가 표본 확대)
     ap.add_argument("--holdout", action="store_true")             # 구조 홀드아웃(혼합·충돌·누락·off-task·신규 템플릿) 평가
     ap.add_argument("--reps", type=int, default=4)                # 홀드아웃 반복 수
+    ap.add_argument("--robust", default="")                       # rev11: rules | multi (robustness sets)
+    ap.add_argument("--paraphrases", default="")                  # rev11: paraphrase JSON (default results/rev11_paraphrases.json)
+    ap.add_argument("--judge-model", default="")                  # rev11: override TSA judge / witness / attribution-judge model
     a=ap.parse_args()
     os.makedirs(RESULTS, exist_ok=True)
     cfg=C.load_profile(a.profile); cfg.scorer.kind="tsa"
@@ -148,8 +152,14 @@ def main():
             raise SystemExit(f"unknown model {a.model!r}; 사용 가능: {sorted(set(list(C.MODELS)+list(alias)))}")
         cfg.model=alias.get(a.model, a.model)
     if a.n_benign: cfg.factors.n_benign_per_domain=a.n_benign
+    if a.judge_model: cfg.scorer.judge_model=a.judge_model
     run_detectors=[d.strip() for d in a.detectors.split(",") if d.strip()]
-    if a.holdout:
+    if a.robust=="rules":
+        pj=load_paraphrases(a.paraphrases or os.path.join(RESULTS,"rev11_paraphrases.json"))
+        specs=build_rule_variant_specs(cfg, reps=a.reps, n_distractor=a.n_distractor, paraphrases=pj.get("paraphrases", pj))
+    elif a.robust=="multi":
+        specs=build_multiconnector_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.holdout:
         specs=build_holdout_specs(cfg, n_distractor=a.n_distractor, reps=a.reps)
     else:
         specs=build_realistic_specs(cfg, benign_mode="with_legit", n_distractor=a.n_distractor)

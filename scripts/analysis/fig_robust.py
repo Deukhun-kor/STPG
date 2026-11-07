@@ -21,9 +21,8 @@ for ax, (db, items, title, xlab) in zip(axs, [(rules, A, "(a) set A: approved tr
         ax.barh(y + (2 - i) * h, vals, h, color=col, label=lab, zorder=3, edgecolor="white", linewidth=0.4)
         for by, v in zip(y + (2 - i) * h, vals):
             if v == 0: ax.plot([0.25], [by], marker="o", ms=2.2, color=col, zorder=4)          # zero: dot at the axis
-            elif v != 30: ax.text(v - 0.5, by, str(v), va="center", ha="right", fontsize=10, color="white", fontweight="bold", zorder=5)
     ax.set_yticks(y); ax.set_yticklabels([l for _, l in items], fontsize=10)
-    ax.set_xlim(0, 34); ax.set_xticks([0, 10, 20, 30]); ax.set_xlabel(xlab, fontsize=10); ax.set_title(title, fontsize=11, loc="left")
+    ax.set_xlim(0, 31.5); ax.set_xticks([0, 10, 20, 30]); ax.set_xlabel(xlab, fontsize=10); ax.set_title(title, fontsize=11, loc="left")
     ax.grid(axis="x", color="0.9", lw=0.6, zorder=0); ax.tick_params(axis="x", labelsize=10)
     for sp in ["top", "right"]: ax.spines[sp].set_visible(False)
 h_, l_ = axs[0].get_legend_handles_labels(); fig.legend(h_, l_, fontsize=10, loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.01))

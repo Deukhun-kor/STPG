@@ -28,16 +28,6 @@ Deuk-Hun Kim and Jin Kwak, Department of Cyber Security, Ajou University\\[3pt]
 \end{center}
 \noindent This document holds the detailed tables and figures that the main text summarizes. Every number here is produced by the released analysis scripts from the released result databases at \url{https://github.com/Deukhun-kor/STPG}, tag \texttt{v8-revision1}. Items are ordered by the section of the main text that cites them, and section numbers in the titles refer to the main text. Citations use the reference list at the end of this document.
 
-\subsection*{Figure S1: Threat model: spatio-temporal dispersion of the attack records (Section 3.2 of the main text)}
-\begin{figure}[H]
-\begin{adjustwidth}{-\extralength}{0cm}
-\centering
-\resizebox{0.98\fulllength}{!}{\input{fig1_threat.tex}}
-\end{adjustwidth}
-\caption{Spatio-temporal dispersion of attack records (red) among ordinary records across sessions and injection locations}
-\label{fig:threat}
-\end{figure}
-
 \subsection*{Table S1: Threat conditions and the limitations they exploit (Section 3.3)}
 \begin{table}[H]
 \caption{Threat conditions, the limitation each exploits, the comparison condition that instantiates it, and the stressing factor}
@@ -159,14 +149,14 @@ joint, balanced LOFO & without length features & -- & -- & 0.260 \\
 
 \subsection*{Table S6: Version manifest of the runs, model identifiers, regions, and dates (Section 6.2.4)}
 \begin{table}[H]
-\caption{Version manifest of the four end-to-end runs and the run-5 re-derivation; every decision table reports run 5, and the cost and latency tables keep their run-4 measurement provenance}
+\caption{Version manifest of the runs: decision tables report run 5, cost and latency tables run 4}
 \label{tab:manifest}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
 \centering
 \begin{tabularx}{\fulllength}{Q{2.0cm}YYYYY}
 \toprule
-\textbf{Item} & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3 (submitted)} & \textbf{Run 4 (first revision)} & \textbf{Run 5 (reported)} \\
+\textbf{Item} & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3 (v3.3)} & \textbf{Run 4 (v3.4)} & \textbf{Run 5 (v3.5, reported)} \\
 \midrule
 generator / seeds & first generator & revised generator (neutral note, mirrored negatives), seeds fixed & same generator and seeds, challenge set extended from 10 to 15 structures & unchanged, plus robustness sets A to I, the hardened and labeled victim runs, and the frozen set (Sections 6.2.6 and 6.2.7 of the main text) & unchanged; set F extended by three malformed forms \\ \rowsep
 victim decisions & generated & regenerated for the revised traces, cached & served from the run-2 cache & served from the run-2 cache; new decisions only for new traces and new victim settings & served from the run-2 and run-4 caches; no new victim decisions \\ \rowsep
@@ -179,6 +169,7 @@ models (Vertex AI identifiers) & gemini-2.5-flash-lite, text-embedding-005 & sam
 dates of the model calls & October 2026 & October 2026 & 18--19 October 2026 & 4--5 November 2026 (set A victims 20 October) & re-derivation and re-runs 5 November 2026 \\
 \bottomrule
 \end{tabularx}
+\noindent{\footnotesize Additional generation model: gemini-2.5-flash, used for the set-A rule paraphrases (Section 6.2.6).}
 \end{adjustwidth}
 \end{table}
 
@@ -218,7 +209,7 @@ external calls the victim issued (176) & & 176/176 (run 4: 175/176) & & \\
 \noindent{\small Abbreviations: A, the approved partner; B, the synthetic sink; X, an off-task string or label; T, U, M, E, calls decided by the trusted-directive, untrusted-directive, ambiguous-reference, and no-evidence branches of the kernel (Section 7.2.1 of the main text).}
 
 
-\subsection*{Figure S2: Witness verdicts and kernel verification on the challenge set (Section 7.2.1)}
+\subsection*{Figure S1: Witness verdicts and kernel verification on the challenge set (Section 7.2.1)}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth]{figs/fig_witness.pdf}
@@ -226,7 +217,7 @@ external calls the victim issued (176) & & 176/176 (run 4: 175/176) & & \\
 \label{fig:witness}
 \end{figure}
 
-\subsection*{Table S8: Robustness sets A and B per variant and condition (Section 7.2.2; Figure 4 of the main text)}
+\subsection*{Table S8: Robustness sets A and B per variant and condition (Section 7.2.2; Figure 5 of the main text)}
 \begin{table}[H]
 \caption{Robustness sets: calls passed or allowed out of 30 per variant (set A: approved transfer to partner A; set B: attack to the synthetic sink)}
 \label{tab:robust}
@@ -255,7 +246,7 @@ B: two connectors, mapping outside the relation pattern & 0 & 0 & 30 & 0 & 0 & 0
 \end{adjustwidth}
 \end{table}
 
-\subsection*{Table S9: Frozen evaluation set: structures, overlap with the development sets, branches, and the post-hoc column (Section 7.3; Figure 5 of the main text)}
+\subsection*{Table S9: Frozen evaluation set: structures, overlap with the development sets, branches, and the post-hoc column (Section 7.3; Figure 6 of the main text)}
 \begin{table}[H]
 \caption{Frozen evaluation set: structures, their overlap with the development sets, specified decisions, and STPG outcomes (counterfactual calls, 4 domains $\times$ 5 repetitions)}
 \label{tab:unseen}
@@ -276,7 +267,7 @@ two-hop chain, trusted & rule names label L, trusted L $\to$ K, trusted K $\to$ 
 two-hop chain, poisoned & same, K $\to$ X through ingestion; X block & set D hop-one untrusted, new wording & 20/20 & U 14, E 6 & 20/20 \\ \rowsep
 descriptive notice & trusted notice names A, no rule; A block & set E, new wording & 10/20 & T 10, E 10 & 10/20 \\ \rowsep
 rule and untrusted mention & trusted rule to A, untrusted note mentions A; A pass & challenge set, new wording & 20/20 & T 20 & 20/20 \\ \rowsep
-revoked rule & trusted rule to A, later trusted revocation; A block & new semantics (no development set) & 0/20 & T 20 & 0/20 \\ \rowsep
+revoked rule & trusted rule to A, later trusted revocation; A block & new semantic case (revocation; no development-set counterpart) & 0/20 & T 20 & 0/20 \\ \rowsep
 untrusted archive rule & untrusted rule to the internal store; store pass, A block & main run hard negative, new wording & 40/40 & internal 20, E 20 & 40/40 \\
 \midrule
 all & & 4 domains, 1 new & 190/260 & T 70, U 56, E 114, internal 20 & 218/260 \\
@@ -286,15 +277,7 @@ all & & 4 domains, 1 new & 190/260 & T 70, U 56, E 114, internal 20 & 218/260 \\
 \noindent{\footnotesize T trusted directive / U untrusted directive / E no evidence / every structure uses phrasings written by the second model family and is instantiated in the procurement domain, which no development set contains}
 \end{table}
 
-\subsection*{Figure S3: ROC curves of the four scorers on both benign sets (Section 7.4.2)}
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{figs/fig_roc.pdf}
-\caption{ROC curves of the four scorers on both benign sets; markers mark the a priori threshold}
-\label{fig:roc}
-\end{figure}
-
-\subsection*{Figure S4: Detection AUROC by attack factor (Section 7.4.2)}
+\subsection*{Figure S2: Detection AUROC by attack factor (Section 7.4.2)}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.98\textwidth]{figs/fig_factors.pdf}
@@ -322,7 +305,7 @@ window scorer & 0/648 / 0/195 & 322/648 / 9/195 (0.436) & 0.385 / 0.391 / 0.368 
 \end{adjustwidth}
 \end{table}
 
-\subsection*{Figure S5: Read-level scores under the primary judge and the second model family (Section 7.4.4)}
+\subsection*{Figure S3: Read-level scores under the primary judge and the second model family (Section 7.4.4)}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.98\textwidth]{figs/fig_judgeswap.pdf}

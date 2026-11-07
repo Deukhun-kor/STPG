@@ -9,8 +9,8 @@ OLD, NEW, OUT = sys.argv[1:4]
 MOVED = {  # label -> where it went
     'tab:limits': 'Table S1', 'tab:decision': 'Table S2', 'tab:example': 'Table S3', 'tab:bench': 'Table S4',
     'tab:probe': 'Table S5', 'tab:manifest': 'Table S6', 'tab:holdout': 'Table S7', 'tab:robust': 'Table S8',
-    'tab:unseen': 'Table S9', 'tab:lodo': 'Table S10', 'tab:cost': 'Table S11', 'fig:threat': 'Figure S1',
-    'fig:witness': 'Figure S2', 'fig:roc': 'Figure S3', 'fig:factors': 'Figure S4', 'fig:judgeswap': 'Figure S5',
+    'tab:unseen': 'Table S9', 'tab:lodo': 'Table S10', 'tab:cost': 'Table S11', 
+    'fig:witness': 'Figure S1',  'fig:factors': 'Figure S2', 'fig:judgeswap': 'Figure S3',
     'tab:prf': 'the text of Section 7.1', 'tab:detprf': 'the text of Section 7.4.2'}
 
 # ---------------------------------------------------------------- units
@@ -53,9 +53,13 @@ def strike(text):
     """per-word strikeout so that lines can break (no ulem available)"""
     return ' '.join('\\DIFdelw{%s}' % t for t in toks(text))
 
-PLAIN = [False]
+PLAIN = [False]   # True inside headings (no strikethrough; bookmarks cannot carry it)
+PDFSAFE = [False] # True inside \abstract etc.: strike, but wrapped so hyperref's pdf strings see plain text
+def strike_pdfsafe(text):
+    return ' '.join('\\texorpdfstring{\\DIFdelw{%s}}{%s}' % (t, t) for t in toks(text))
 def mark(kind, text):
     if not text.strip(): return text
+    if kind == 'del' and PDFSAFE[0]: return strike_pdfsafe(text)
     if kind == 'del' and not PLAIN[0]: return strike(text)
     return '\\DIF%s{%s}' % (kind, text)
 
@@ -103,7 +107,7 @@ def diff_line(a, b):
         return '\\%s{\\texorpdfstring{%s}{%s}}' % (mb.group(1), w, mb.group(2)) if w else mark_line('add', b)
     ca, cb = CMD1.match(sa), CMD1.match(sb)
     if ca and cb:
-        PLAIN[0] = True; w = wdiff(ca.group(2), cb.group(2)); PLAIN[0] = False; return '\\%s{%s}' % (cb.group(1), w) if w else mark_line('add', b)
+        PDFSAFE[0] = True; w = wdiff(ca.group(2), cb.group(2)); PDFSAFE[0] = False; return '\\%s{%s}' % (cb.group(1), w) if w else mark_line('add', b)
     ia, ib = re.match(r'^(\\item(?:\[[^\]]*\])?)\s*(.*)$', sa), re.match(r'^(\\item(?:\[[^\]]*\])?)\s*(.*)$', sb)
     if ia and ib:
         w = wdiff(ia.group(2), ib.group(2)); return '%s %s' % (ib.group(1), w) if w else mark_line('add', b)
@@ -136,7 +140,8 @@ def block_lines_mark(kind, lines):
         if s.startswith(('\\IF', '\\ELSE', '\\FOR', '\\WHILE', '\\ENDIF')):
             out.append('{\\color{%s}%s}' % ('blue' if kind == 'add' else 'red', s)); continue
         m = re.match(r'^(\\item)\s*(.*)$', s)
-        if m: out.append('%s \\DIF%s{%s}' % (m.group(1), kind, m.group(2))); continue
+        if m:
+            out.append('%s \\DIFadd{%s}' % (m.group(1), m.group(2)) if kind == 'add' else '\\item[] ' + strike(m.group(2))); continue
         if s.startswith('\\noindent{\\footnotesize'):
             out.append('\\noindent{\\footnotesize \\DIF%s{%s}}' % (kind, s[len('\\noindent{\\footnotesize'):-1].strip())); continue
         if kind == 'del':
@@ -145,16 +150,58 @@ def block_lines_mark(kind, lines):
         out.append(l)
     return out
 
+import hashlib, os
+OLDFIGS = os.path.join(os.path.dirname(os.path.abspath(OUT)), 'oldfigs')   # submitted-version figure files (figs/*.pdf, fig*.tex)
+NEWDIR = os.path.dirname(os.path.abspath(NEW))
+def asset_of(block):
+    m = re.search(r'\\includegraphics(?:\[[^\]]*\])?\{([^}]*)\}', block) or re.search(r'\\input\{([^}]*)\}', block)
+    return m.group(1) if m else None
+def asset_changed(block):
+    f = asset_of(block)
+    if not f: return False
+    o = os.path.join(OLDFIGS, os.path.basename(f)); n = os.path.join(NEWDIR, f)
+    if not (os.path.exists(o) and os.path.exists(n)): return False
+    return hashlib.md5(open(o, 'rb').read()).hexdigest() != hashlib.md5(open(n, 'rb').read()).hexdigest()
+def old_float_as_block(a, env):
+    """the submitted float rendered inline (no float, no caption/label) in red, graphics taken from OLDFIGS"""
+    out = []
+    for l in a.split('\n'):
+        t = l.strip()
+        if re.match(r'\\begin\{(table|figure)\}', t): out.append('\\begin{center}\\color{red}'); continue
+        if re.match(r'\\end\{(table|figure)\}', t): out.append('\\end{center}'); continue
+        if t.startswith('\\caption{') or t.startswith('\\label{'): continue
+        l = re.sub(r'\{figs/([^}]*)\}', lambda m: '{oldfigs/' + m.group(1) + '}', l)
+        l = re.sub(r'\\input\{(fig[^}]*\.tex)\}', lambda m: '\\input{oldfigs/' + m.group(1) + '}', l)
+        if ' & ' in t and '\\\\' in t: l = cellmark('del', t)
+        out.append(l)
+    return '\n'.join(out)
+def new_float_marked(b):
+    """the revised float with its caption and cells in blue"""
+    out = []
+    for l in b.split('\n'):
+        t = l.strip()
+        if t.startswith('\\caption{'): out.append('\\caption{\\DIFadd{%s}}' % t[len('\\caption{'):-1]); continue
+        if ' & ' in t and '\\\\' in t: out.append(cellmark('add', t)); continue
+        if t.startswith('\\includegraphics') or t.startswith('\\resizebox'): out.append('{\\color{blue}\\fbox{' + t + '}}'); continue
+        out.append(l)
+    return '\n'.join(out)
 def diff_block(a, b):
-    if a == b: return b
     env = env_of(b)
+    if env == 'figure':
+        if a == b and not asset_changed(a): return b
+        cap = re.search(r'\\caption\{(.*)\}', a); cap = cap.group(1) if cap else ''
+        note = '\\noindent ' + strike('[Figure of the submitted version, replaced by the figure below: %s]' % cap)
+        return note + '\n' + old_float_as_block(a, env) + '\n' + new_float_marked(b)
+    if a == b: return b
     if env == 'equation':
         return ('\\DIFdel{[Equation of the submitted version:]}\n{\\color{red}' + a.replace('\\begin{equation}', '\\begin{equation*}').replace('\\end{equation}', '\\end{equation*}')
                 + '}\n' + b.replace('\\begin{equation}', '\\begin{equation}\\color{blue}'))
     la, lb = a.split('\n'), b.split('\n')
     spec = lambda ls: [x for x in ls if x.strip().startswith('\\begin{tabularx}')]
     if env == 'table' and spec(la) != spec(lb):
-        return removed_block_note(a).replace('removed from the main text, now %s' % MOVED.get(label_of(a), 'removed'), 'replaced by the table below').replace('replaced:', 'replaced by the table below:') + '\n' + '\n'.join(block_lines_mark('add', lb))
+        cap = re.search(r'\\caption\{(.*)\}', a); cap = cap.group(1) if cap else ''
+        note = '\\noindent ' + strike('[Table of the submitted version, replaced by the table below: %s]' % cap)
+        return note + '\n' + old_float_as_block(a, env) + '\n' + new_float_marked(b)
     sm = difflib.SequenceMatcher(None, la, lb, autojunk=False); out = []
     for op, i1, i2, j1, j2 in sm.get_opcodes():
         if op == 'equal': out.extend(lb[j1:j2])
@@ -165,6 +212,8 @@ def diff_block(a, b):
                     w = wdiff(xs[len('\\caption{'):-1], ys[len('\\caption{'):-1]); out.append('\\caption{%s}' % w if w else '\\caption{\\DIFadd{%s}}' % ys[len('\\caption{'):-1])
                 elif ' & ' in ys and '\\\\' in ys:
                     out.append(cellmark('del', xs)); out.append(cellmark('add', ys))
+                elif xs.startswith('\\item') and ys.startswith('\\item'):
+                    out.append(diff_line(x, y))
                 else:
                     out.extend(block_lines_mark('del', [x])); out.extend(block_lines_mark('add', [y]))
         else:
@@ -200,10 +249,16 @@ def emit_pair(a, b):
     if a[0] == 'line' and b[0] == 'line': return diff_line(a[1], b[1])
     return mark_line('del', a[1]) if a[0] == 'line' else removed_block_note(a[1]) + '\n' + (mark_line('add', b[1]) if b[0] == 'line' else '\n'.join(block_lines_mark('add', b[1].split('\n'))))
 
-def emit_del(a): return mark_line('del', a[1]) if a[0] == 'line' else removed_block_note(a[1])
-def emit_add(b): return mark_line('add', b[1]) if b[0] == 'line' else '\n'.join(block_lines_mark('add', b[1].split('\n')))
-
 UA, UB = units(OLD), units(NEW)
+OLDBLK = {label_of(u[1]): u[1] for u in UA if u[0] == 'block' and label_of(u[1])}
+NEWBLK = {label_of(u[1]): u[1] for u in UB if u[0] == 'block' and label_of(u[1])}
+def emit_del(a):
+    if a[0] == 'block' and label_of(a[1]) in NEWBLK: return ''          # paired globally: shown where the revised float sits
+    return mark_line('del', a[1]) if a[0] == 'line' else removed_block_note(a[1])
+def emit_add(b):
+    if b[0] == 'block' and label_of(b[1]) in OLDBLK: return diff_block(OLDBLK[label_of(b[1])], b[1])
+    return mark_line('add', b[1]) if b[0] == 'line' else '\n'.join(block_lines_mark('add', b[1].split('\n')))
+
 NEWLABELS = set(re.findall(r'\\label\{([^}]*)\}', open(NEW, encoding='utf-8').read()))
 sm = difflib.SequenceMatcher(None, [key(u) for u in UA], [key(u) for u in UB], autojunk=False)
 out = []
@@ -252,6 +307,11 @@ res = res.replace('\\usepackage{algorithmic}\n', '\\usepackage{algorithmic}\n\\p
 OLDNUM = {'tab:related': '1', 'tab:limits': '2', 'tab:decision': '3', 'tab:adapters': '4', 'tab:example': '5', 'tab:bench': '6', 'tab:probe': '7', 'tab:manifest': '8', 'tab:main': '9', 'tab:prf': '10', 'tab:holdout': '11', 'tab:detect': '12', 'tab:lodo': '13', 'tab:detprf': '14', 'tab:cost': '15', 'tab:robust': '16', 'fig:threat': '1', 'fig:overview': '2', 'fig:kernel': '3', 'fig:witness': '4', 'fig:holdout': '5', 'fig:scores': '6', 'fig:roc': '7', 'fig:factors': '8', 'fig:robust': '9', 'fig:judgeswap': '10', 'alg:tsa': '1', 'alg:gate': '2'}
 # references inside deleted text point to labels that no longer exist: print the submitted version's number
 res = re.sub(r'\\DIFdelw\{([^{}]*\\ref\{([^}]*)\}[^{}]*)\}', lambda m: '\\DIFdelw{' + m.group(1).replace('\\ref{%s}' % m.group(2), OLDNUM.get(m.group(2), '??')) + '}' if m.group(2) in OLDNUM and m.group(2) not in NEWLABELS else m.group(0), res)
-res = res.replace('\\begin{document}\n', '\\begin{document}\n\\noindent{\\small\\textbf{Change marking (relative to the submitted version):} \\DIFdelw{red} \\DIFdelw{strikethrough} = removed text; \\DIFadd{blue} = added or revised text; tables and figures moved to the Supplementary Material are indicated by a struck-through note at their former position; in the abstract and headings, removed text is shown in red without strikethrough.}\\par\\medskip\n', 1)
+res = res.replace('\\begin{document}\n', '\\begin{document}\n\\noindent{\\small\\textbf{Change marking (relative to the submitted version):} Deleted text is shown in \\DIFdelw{red} \\DIFdelw{with} \\DIFdelw{strikethrough}, and added or revised text is shown in \\DIFadd{blue}. A figure or table that changed is shown twice, with the submitted version in red followed by the revised version in blue. A table or figure moved to the Supplementary Material is indicated by a struck-through note at its former position.}\\par\\medskip\n', 1)
+absm = re.search(r'\\abstract\{(.*)\}', open(NEW, encoding='utf-8').read())
+if absm:
+    plain = absm.group(1)
+    # the class sets pdfsubject from \abstract inside \maketitle (run at \begin{document}); override afterwards
+    res = res.replace('\\begin{document}\n', '\\begin{document}\n\\hypersetup{pdfsubject={' + plain + '}}\n', 1)
 open(OUT, 'w', encoding='utf-8').write(res)
 print('units old/new', len(UA), len(UB), '-> written', OUT)

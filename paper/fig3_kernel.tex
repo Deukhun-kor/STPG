@@ -7,27 +7,27 @@
   ad/.style={draw=blue!60,fill=blue!5,rounded corners=3pt,align=left,inner sep=4pt,text width=5.0cm,font=\scriptsize},
   arr/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=black!70]},line width=1pt,draw=black!70}]
 % kernel column
-\node[font=\small\bfseries,text=blue!60!black] at (0,11.2) {Decision kernel, STPG realization (Algorithm~2)};
-\node[box,fill=yellow!12] (in) at (0,10.55) {privileged call: destination $\delta$, context lineages $\mathcal{G}$\\$\delta\leftarrow\mathrm{canon}(\delta)$: strip wrapping, fold case and \texttt{-}/\texttt{\_} runs};
-\node[dec] (d0) at (0,9.1) {$\delta\in\mathcal{D}_{\mathrm{int}}$ ?};
-\node[dec] (dM) at (0,7.8) {$\delta$ one identifier?\\(no space, quote, bracket)};
-\node[dec] (dE) at (0,6.05) {context resolves\\$\delta$ further?};
-\node[box,fill=blue!5] (bind) at (0,4.3) {bind $\delta$ to lineages: direct mention, or\\registry reference resolved $\le 2$ hops (chain $C$);\\ambiguous key $\Rightarrow$ chain untrusted};
-\node[box,fill=blue!5] (wit) at (0,2.55) {evidence adapter: for each binding $G$, does $G\cup C$ target $\delta$? ($W_{\mathrm{raw}}$)\\kernel verifies: a candidate record (support, else target role, else all) is not a mapping\\statement and mentions $\delta$ or a chain token (Eq.~2); trust $=\min\tau_{\mathrm{src}}(G\cup C)$};
-\node[dec] (d1) at (0,0.6) {trusted directive\\targets $\delta$?};
-\node[dec] (d2) at (0,-1.4) {untrusted directive\\targets $\delta$?};
-\node[box,fill=black!5] (d3) at (0,-3.2) {no directive evidence: default};
-\node[pass] (p0) at (4.3,9.1) {PASS (out of scope)};
-\node[block] (bM) at (4.3,7.8) {BLOCK (malformed)};
-\node[block] (bE) at (4.3,6.05) {BLOCK (non-endpoint)};
-\node[pass] (p1) at (4.3,0.6) {PASS (authorized)};
-\node[block] (b1) at (4.3,-1.4) {BLOCK; log $\Delta\pi$};
-\node[block] (b2) at (3.1,-4.7) {BLOCK (STPG default)};
-\node[pass] (p2) at (-3.1,-4.7) {PASS (allow-on-empty variant)};
-\draw[arr] (in)--(d0); \draw[arr] (d0)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(p0); \draw[arr] (d0)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(dM);
-\draw[arr] (dM)--node[pos=0.5,above=1pt,font=\scriptsize]{no}(bM); \draw[arr] (dM)--node[pos=0.45,right=1.5pt,font=\scriptsize]{yes}(dE);
-\draw[arr] (dE)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(bE); \draw[arr] (dE)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(bind);
-\draw[arr] (bind)--(wit); \draw[arr] (wit)--(d1); \draw[arr] (d1)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(p1); \draw[arr] (d1)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(d2);
-\draw[arr] (d2)--node[pos=0.5,above=1pt,font=\scriptsize]{yes}(b1); \draw[arr] (d2)--node[pos=0.45,right=1.5pt,font=\scriptsize]{no}(d3);
+\node[font=\small\bfseries,text=blue!60!black] at (0,12.5) {Decision kernel, STPG realization (Algorithm~2)};
+\node[box,fill=yellow!12] (in) at (0,11.8) {privileged call: destination $\delta$, context lineages $\mathcal{G}$\\$\delta\leftarrow\mathrm{canon}(\delta)$: strip wrapping, fold case and \texttt{-}/\texttt{\_} runs};
+\node[dec] (d0) at (0,10.2) {$\delta\in\mathcal{D}_{\mathrm{int}}$ ?};
+\node[dec] (dM) at (0,8.3) {$\delta$ one identifier?\\(no space, quote, bracket)};
+\node[dec] (dE) at (0,6.35) {context resolves\\$\delta$ further?};
+\node[box,fill=blue!5] (bind) at (0,4.5) {bind $\delta$ to lineages: direct mention, or\\registry reference resolved $\le 2$ hops (chain $C$);\\ambiguous key $\Rightarrow$ chain untrusted};
+\node[box,fill=blue!5] (wit) at (0,2.6) {evidence adapter: for each binding $G$, does $G\cup C$ target $\delta$? ($W_{\mathrm{raw}}$)\\kernel verifies: a candidate record (support, else target role, else all) is not a mapping\\statement and mentions $\delta$ or a chain token (Eq.~2); trust $=\min\tau_{\mathrm{src}}(G\cup C)$};
+\node[dec] (d1) at (0,0.45) {trusted directive\\targets $\delta$?};
+\node[dec] (d2) at (0,-1.75) {untrusted directive\\targets $\delta$?};
+\node[box,fill=black!5] (d3) at (0,-3.7) {no directive evidence: default};
+\node[pass] (p0) at (5.3,10.2) {PASS (out of scope)};
+\node[block] (bM) at (5.3,8.3) {BLOCK (malformed)};
+\node[block] (bE) at (5.3,6.35) {BLOCK (non-endpoint)};
+\node[pass] (p1) at (5.3,0.45) {PASS (authorized)};
+\node[block] (b1) at (5.3,-1.75) {BLOCK; log $\Delta\pi$};
+\node[block] (b2) at (3.3,-5.35) {BLOCK (STPG default)};
+\node[pass] (p2) at (-3.3,-5.35) {PASS (allow-on-empty variant)};
+\draw[arr] (in)--(d0); \draw[arr] (d0)--node[pos=0.5,above=2pt,font=\footnotesize]{yes}(p0); \draw[arr] (d0)--node[pos=0.5,right=2pt,font=\footnotesize]{no}(dM);
+\draw[arr] (dM)--node[pos=0.5,above=2pt,font=\footnotesize]{no}(bM); \draw[arr] (dM)--node[pos=0.5,right=2pt,font=\footnotesize]{yes}(dE);
+\draw[arr] (dE)--node[pos=0.5,above=2pt,font=\footnotesize]{yes}(bE); \draw[arr] (dE)--node[pos=0.5,right=2pt,font=\footnotesize]{no}(bind);
+\draw[arr] (bind)--(wit); \draw[arr] (wit)--(d1); \draw[arr] (d1)--node[pos=0.5,above=2pt,font=\footnotesize]{yes}(p1); \draw[arr] (d1)--node[pos=0.5,right=2pt,font=\footnotesize]{no}(d2);
+\draw[arr] (d2)--node[pos=0.5,above=2pt,font=\footnotesize]{yes}(b1); \draw[arr] (d2)--node[pos=0.5,right=2pt,font=\footnotesize]{no}(d3);
 \draw[arr] (d3)--(b2); \draw[arr] (d3)--(p2);
 \end{tikzpicture}

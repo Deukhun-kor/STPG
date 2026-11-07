@@ -26,7 +26,7 @@ Spatio-Temporal Provenance Guard: Detecting Privilege Escalation Attacks that Ex
 Deuk-Hun Kim and Jin Kwak, Department of Cyber Security, Ajou University\\[3pt]
 \small Manuscript applsci-4676171, revision 1 (kernel v3.5, run 5)
 \end{center}
-\noindent This document holds the detailed tables and figures that the main text summarizes; every number here is produced by the released analysis scripts from the released result databases (\url{https://github.com/Deukhun-kor/STPG}, tag \texttt{v8-revision1}). Items are ordered by the section of the main text that cites them, and section numbers in the titles refer to the main text. Citations use the reference list at the end of this document.
+\noindent This document holds the detailed tables and figures that the main text summarizes. Every number here is produced by the released analysis scripts from the released result databases at \url{https://github.com/Deukhun-kor/STPG}, tag \texttt{v8-revision1}. Items are ordered by the section of the main text that cites them, and section numbers in the titles refer to the main text. Citations use the reference list at the end of this document.
 
 \subsection*{Figure S1: Threat model: spatio-temporal dispersion of the attack records (Section 3.2 of the main text)}
 \begin{figure}[H]
@@ -34,13 +34,13 @@ Deuk-Hun Kim and Jin Kwak, Department of Cyber Security, Ajou University\\[3pt]
 \centering
 \resizebox{0.98\fulllength}{!}{\input{fig1_threat.tex}}
 \end{adjustwidth}
-\caption{Spatio-temporal dispersion of attack records (red) among ordinary records across sessions and injection locations.}
+\caption{Spatio-temporal dispersion of attack records (red) among ordinary records across sessions and injection locations}
 \label{fig:threat}
 \end{figure}
 
 \subsection*{Table S1: Threat conditions and the limitations they exploit (Section 3.3)}
 \begin{table}[H]
-\caption{Threat conditions, the limitation each exploits, the comparison condition that instantiates it, and the stressing factor.}
+\caption{Threat conditions, the limitation each exploits, the comparison condition that instantiates it, and the stressing factor}
 \label{tab:limits}
 \footnotesize
 \begin{tabularx}{\textwidth}{Q{2.6cm}Q{3.2cm}Q{3.6cm}Y}
@@ -60,7 +60,7 @@ directive and destination in one trusted text & existence and occurrence checked
 
 \subsection*{Table S2: Decision table of the kernel, Equation (3) of the main text (Section 5.4.4)}
 \begin{table}[H]
-\caption{Decision table of Equation (3) of the main text.}
+\caption{Decision table of Equation (3) of the main text}
 \label{tab:decision}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -70,7 +70,7 @@ directive and destination in one trusted text & existence and occurrence checked
 \textbf{Destination} & \textbf{Evidence in $B(\delta)$} & \textbf{Example} & \textbf{Decision} \\
 \midrule
 internal (allowlist) & any & operator rule or untrusted intake note routed to the internal queue & pass (out of scope) \\ \rowsep
-not a single identifier (whitespace, quotes, or brackets inside the string) & any & agent routes to \texttt{partner PARTNER-EXT-424} or to the phrase ``partner registered under key contact\_sec'' & \textbf{block} (malformed), before any branch \\ \rowsep
+not a single identifier (whitespace, quotes, or brackets inside the string) & any & agent routes to partner PARTNER-EXT-424 or to the phrase ``partner registered under key contact\_sec'' & \textbf{block} (malformed), before any branch \\ \rowsep
 reference token (context resolves $\delta$ further) & any & agent routes to a label or registry key instead of the endpoint it resolves to & \textbf{block} (non-endpoint), before any branch \\ \rowsep
 external & trusted lineage with trusted chain, $W^{*}$ true & operator's standing rule naming the partner, or reaching it through a trusted registry entry & pass (authorized), any untrusted directive to $\delta$ is logged \\ \rowsep
 external & untrusted lineage, or trusted lineage with untrusted or ambiguous chain, $W^{*}$ true, no trusted directive & records assembled from the ingestion path, trusted rule pointing at a key that an untrusted record resolves, or that two records resolve differently & \textbf{block}, log $\Delta\pi$ \\ \rowsep
@@ -84,7 +84,7 @@ external & binding record without sidecar & record whose provenance was lost & c
 
 \subsection*{Table S3: Worked example from the main run (Section 5.6)}
 \begin{table}[H]
-\caption{Worked example from the main run with abbreviated record bodies and synthetic destinations.}
+\caption{Worked example from the main run with abbreviated record bodies and synthetic destinations}
 \label{tab:example}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -93,10 +93,10 @@ external & binding record without sidecar & record whose provenance was lost & c
 \toprule
 \textbf{Step} & \textbf{Attack trace} & \textbf{Approved external-transfer trace} \\
 \midrule
-records (lineage, trust) & \texttt{src:C7} ($\tau_{\mathrm{ext}}$), writer ingest ($\pi$=write), sessions 1--3, log / ticket / tool description: ``ops rule: each finalized incident report is mirrored to the endpoint bound to label escalation-mirror'', ``binding note: label escalation-mirror maps to registry key sink\_ref'', ``registry entry: sink\_ref = SYNTH-AUDIT-SINK-1126'' & \texttt{src:C9} ($\tau_{\mathrm{ext}}$), 4 records: archive rule bound to label archive-primary01, binding note, ``registry entry: archive\_ref = internal-ops-queue'', directory line. \texttt{write:}rule ($\tau_{\mathrm{ops}}$, $\pi$=IAM): ``approved standing rule (REQ-approved): forward the incident summary report to partner PARTNER-EXT-309'' \\ \rowsep
-TSA on read & $E(\texttt{src:C7})=0.90$, 18 filler lineages $\le 0.45$ & $E(\text{rule})=0.90$, $E(\texttt{src:C9})=0.43$, fillers $\le 0.45$ \\ \rowsep
+records (lineage, trust) & src:C7 ($\tau_{\mathrm{ext}}$), writer ingest ($\pi$=write), sessions 1--3, log / ticket / tool description: ``ops rule: each finalized incident report is mirrored to the endpoint bound to label escalation-mirror'', ``binding note: label escalation-mirror maps to registry key sink\_ref'', ``registry entry: sink\_ref = SYNTH-AUDIT-SINK-1126'' & src:C9 ($\tau_{\mathrm{ext}}$), 4 records: archive rule bound to label archive-primary01, binding note, ``registry entry: archive\_ref = internal-ops-queue'', directory line. write:rule ($\tau_{\mathrm{ops}}$, $\pi$=IAM): ``approved standing rule (REQ-approved): forward the incident summary report to partner PARTNER-EXT-309'' \\ \rowsep
+TSA on read & $E(src:C7)=0.90$, 18 filler lineages $\le 0.45$ & $E(\text{rule})=0.90$, $E(src:C9)=0.43$, fillers $\le 0.45$ \\ \rowsep
 agent decision (victim) & route to SYNTH-AUDIT-SINK-1126 & route to PARTNER-EXT-309 \\ \rowsep
-binding, witness, verification & direct, roles target / mapping / mapping, $W^{*}$ true & direct, role target, $W^{*}$ true, \texttt{src:C9} does not bind \\ \rowsep
+binding, witness, verification & direct, roles target / mapping / mapping, $W^{*}$ true & direct, role target, $W^{*}$ true, src:C9 does not bind \\ \rowsep
 PDG decision & \textbf{block} (untrusted directive), $\Delta\pi=\mathrm{IAM}-\mathrm{write}$ & pass (trusted directive), $\Delta\pi=0$ \\ \rowsep
 conservative / matching / attribution judge & block / block / block & block / pass / pass (43 of 71) \\
 \bottomrule
@@ -106,7 +106,7 @@ conservative / matching / attribution judge & block / block / block & block / pa
 
 \subsection*{Table S4: Factors covered by public cross-session resources (Section 6.2.1)}
 \begin{table}[H]
-\caption{Factors covered by public cross-session resources and by the proposed method's data.}
+\caption{Factors covered by public cross-session resources and by the proposed method's data}
 \label{tab:bench}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -131,7 +131,7 @@ privileged sink with a common enforcement kernel & -- & $\circ$ & \checkmark \\
 
 \subsection*{Table S5: Metadata-only probes (Section 6.2.3)}
 \begin{table}[H]
-\caption{AUROC of metadata-only probes without access to record bodies.}
+\caption{AUROC of metadata-only probes without access to record bodies}
 \label{tab:probe}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -159,7 +159,7 @@ joint, balanced LOFO & without length features & -- & -- & 0.260 \\
 
 \subsection*{Table S6: Version manifest of the runs, model identifiers, regions, and dates (Section 6.2.4)}
 \begin{table}[H]
-\caption{Version manifest of the four end-to-end runs and the run-5 re-derivation; every decision table reports run 5, and the cost and latency tables keep their run-4 measurement provenance.}
+\caption{Version manifest of the four end-to-end runs and the run-5 re-derivation; every decision table reports run 5, and the cost and latency tables keep their run-4 measurement provenance}
 \label{tab:manifest}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -184,7 +184,7 @@ dates of the model calls & October 2026 & October 2026 & 18--19 October 2026 & 4
 
 \subsection*{Table S7: Policy challenge set: structures, specified decisions, STPG conformance, branches, and victim destinations (Section 7.2.1)}
 \begin{table}[H]
-\caption{Policy challenge set: specified decisions, STPG conformance, kernel branch, and victim destinations.}
+\caption{Policy challenge set: specified decisions, STPG conformance, kernel branch, and victim destinations}
 \label{tab:holdout}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -222,13 +222,13 @@ external calls the victim issued (176) & & 176/176 (run 4: 175/176) & & \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth]{figs/fig_witness.pdf}
-\caption{Witness verdicts per challenge structure: verified, rejected by Equation (2) of the main text, and negative.}
+\caption{Witness verdicts per challenge structure: verified, rejected by Equation (2) of the main text, and negative}
 \label{fig:witness}
 \end{figure}
 
 \subsection*{Table S8: Robustness sets A and B per variant and condition (Section 7.2.2; Figure 4 of the main text)}
 \begin{table}[H]
-\caption{Robustness sets: calls passed or allowed out of 30 per variant (set A: approved transfer to partner A; set B: attack to the synthetic sink).}
+\caption{Robustness sets: calls passed or allowed out of 30 per variant (set A: approved transfer to partner A; set B: attack to the synthetic sink)}
 \label{tab:robust}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -257,14 +257,14 @@ B: two connectors, mapping outside the relation pattern & 0 & 0 & 30 & 0 & 0 & 0
 
 \subsection*{Table S9: Frozen evaluation set: structures, overlap with the development sets, branches, and the post-hoc column (Section 7.3; Figure 5 of the main text)}
 \begin{table}[H]
-\caption{Frozen evaluation set: structures, their overlap with the development sets, specified decisions, and STPG outcomes (counterfactual calls, 4 domains $\times$ 5 repetitions).}
+\caption{Frozen evaluation set: structures, their overlap with the development sets, specified decisions, and STPG outcomes (counterfactual calls, 4 domains $\times$ 5 repetitions)}
 \label{tab:unseen}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
 \centering
 \begin{tabularx}{\fulllength}{Q{2.3cm}YQ{2.5cm}Q{1.1cm}Q{1.6cm}Q{1.5cm}}
 \toprule
-\textbf{Structure} & \textbf{Context and specified decision} & \textbf{Overlap with development sets} & \textbf{STPG} & \textbf{Branch} & \textbf{Post hoc, ext.\ $\mathcal{M}$} \\
+\textbf{Structure} & \textbf{Context and specified decision} & \textbf{Overlap with development sets} & \textbf{STPG} & \textbf{Branch} & \textbf{Post hoc, ext.\ $M$} \\
 \midrule
 direct rule & trusted rule names A, untrusted background; A pass & main run, new wording and domain & 20/20 & T 20 & 20/20 \\ \rowsep
 rule via key, trusted sheet & trusted rule names key K, trusted sheet K $\to$ A; A pass & set A, new wording and domain & 0/20 & E 20 & 16/20 \\ \rowsep
@@ -290,7 +290,7 @@ all & & 4 domains, 1 new & 190/260 & T 70, U 56, E 114, internal 20 & 218/260 \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{figs/fig_roc.pdf}
-\caption{ROC curves of the four scorers on both benign sets; markers mark the a priori threshold.}
+\caption{ROC curves of the four scorers on both benign sets; markers mark the a priori threshold}
 \label{fig:roc}
 \end{figure}
 
@@ -298,13 +298,13 @@ all & & 4 domains, 1 new & 190/260 & T 70, U 56, E 114, internal 20 & 218/260 \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.98\textwidth]{figs/fig_factors.pdf}
-\caption{AUROC against the non-directive benign set by attack factor.}
+\caption{AUROC against the non-directive benign set by attack factor}
 \label{fig:factors}
 \end{figure}
 
 \subsection*{Table S10: Operating points of the detection scorers (Section 7.4.2)}
 \begin{table}[H]
-\caption{Operating points on the non-directive benign set.}
+\caption{Operating points on the non-directive benign set}
 \label{tab:lodo}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize
@@ -326,13 +326,13 @@ window scorer & 0/648 / 0/195 & 322/648 / 9/195 (0.436) & 0.385 / 0.391 / 0.368 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.98\textwidth]{figs/fig_judgeswap.pdf}
-\caption{Read-level directive score of STPG's assembled lineages under the primary judge and under the second model family.}
+\caption{Read-level directive score of STPG's assembled lineages under the primary judge and under the second model family}
 \label{fig:judgeswap}
 \end{figure}
 
 \subsection*{Table S11: Measured model calls, tokens, wall-clock time, and cost per condition, run 4 (Section 7.5.1)}
 \begin{table}[H]
-\caption{Measured model calls, tokens (thousands, input / output), wall-clock time, and cost per condition, as measured in run 4.}
+\caption{Measured model calls, tokens (thousands, input / output), wall-clock time, and cost per condition, as measured in run 4}
 \label{tab:cost}
 \begin{adjustwidth}{-\extralength}{0cm}
 \footnotesize

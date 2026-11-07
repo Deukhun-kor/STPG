@@ -63,6 +63,13 @@ class SqliteStore(StorageAdapter):
         if not r: return None
         return {"kind": r["kind"], "shard": json.loads(r["shard_json"]) if r["shard_json"] else None}
 
+    def delete_records(self, record_ids: list) -> None:
+        """rev12 (laundering 'compacted' variant): 원본 레코드 제거(본문·사이드카·truth)."""
+        with self._lock, self._conn:
+            for rid in record_ids:
+                for t in ("records", "provenance", "truth"):
+                    self._conn.execute(f"DELETE FROM {t} WHERE record_id=?", (rid,))
+
     def reset(self) -> None:
         with self._lock, self._conn:
             for t in ("records", "provenance", "truth"):

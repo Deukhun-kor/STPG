@@ -16,7 +16,7 @@
     provflow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=blue!60]}, line width=1pt, draw=blue!60},
     blockflow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=red!70!black]}, line width=1pt, draw=red!70!black},
     passflow/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=green!50!black]}, line width=1pt, draw=green!50!black},
-    note/.style={font=\scriptsize, text=black, align=left}
+    note/.style={font=\footnotesize, text=black, align=left}
 ]
 
 % ================================================================ Row 1: sessions (y ~ 7.8)
@@ -29,13 +29,13 @@
 \node[shard]  (s1)  at (1.1,8.55) {$s_1$};
 \node[benign] (b12) at (1.7,8.55) {b};
 \node[benign] (b13) at (2.3,8.55) {b};
-\node[sess, fit=(b11)(b13), label={[font=\tiny, anchor=north, yshift=-1pt]north:Session 1}] (S1) {};
+\node[sess, fit=(b11)(b13), label={[font=\scriptsize, anchor=north, yshift=-1pt]north:Session 1}] (S1) {};
 
 \node[benign] (b21) at (3.7,8.55) {b};
 \node[benign] (b22) at (4.3,8.55) {b};
 \node[shard]  (s2)  at (4.9,8.55) {$s_2$};
 \node[benign] (b23) at (5.5,8.55) {b};
-\node[sess, fit=(b21)(b23), label={[font=\tiny, anchor=north, yshift=-1pt]north:Session 2}] (S2) {};
+\node[sess, fit=(b21)(b23), label={[font=\scriptsize, anchor=north, yshift=-1pt]north:Session 2}] (S2) {};
 
 \node at (6.75,8.55) {$\cdots$};
 
@@ -43,7 +43,7 @@
 \node[benign] (bd2) at (8.6,8.55) {b};
 \node[benign] (bd3) at (9.2,8.55) {b};
 \node[shard]  (sk)  at (9.8,8.55) {$s_k$};
-\node[sess, fit=(bd1)(sk), label={[font=\tiny, anchor=north, yshift=-1pt]north:Session $d$}] (Sd) {};
+\node[sess, fit=(bd1)(sk), label={[font=\scriptsize, anchor=north, yshift=-1pt]north:Session $d$}] (Sd) {};
 
 % legend (right)
 \node[shard] (L1) at (11.6,8.8) {};
@@ -101,7 +101,7 @@
 % ================================================================ Row 3: store / agent / sinks (y 0.35 ..)
 \node[box, fill=yellow!12, anchor=south west, text width=2.5cm] (STORE) at (0.3,-1.35)
   {\textbf{Shared store}\\ records (body only)};
-\node[box, fill=yellow!25, anchor=south west, text width=1.75cm, font=\tiny] (PROV) at (3.1,-1.35)
+\node[box, fill=yellow!25, anchor=south west, text width=1.75cm, font=\scriptsize] (PROV) at (3.1,-1.35)
   {\textbf{provenance}\\ id $\mapsto$ \{src,\\ writer, $\tau$, $\pi$\}};
 \node[box, fill=green!8, anchor=south west, text width=3.0cm] (AGENT) at (6.3,-1.35)
   {\textbf{Operations agent}\\ high privilege ($\pi=\mathrm{IAM}$)\\ reads history, decides action};

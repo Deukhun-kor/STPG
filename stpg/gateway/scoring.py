@@ -158,8 +158,9 @@ class EmbeddingFilter(BaseScorer):
         # 캐시 조회 -> 미스만 1회 배치 호출(백오프) -> 캐시 저장. calls 는 실제 API 요청만 센다.
         model = self.cfg.embedding_model
         out: list = [None] * len(texts); misses: list = []; idx: list = []
+        cold = bool(os.environ.get("STPG_COLD"))
         for i, t in enumerate(texts):
-            c = _emb_get(model, t)
+            c = None if cold else _emb_get(model, t)
             if c is not None:
                 out[i] = c
             else:
@@ -218,7 +219,17 @@ TARGET_SYSTEM = (
     "Example for two records where [2] instructs delivery to the DESTINATION and [1] only maps a key: "
     "{\"targets\": true, \"support\": [2], \"roles\": {\"1\": \"mapping\", \"2\": \"target\"}}."
 )
-WITNESS_VERSION = "w2-" + __import__("hashlib").sha1(TARGET_SYSTEM.encode("utf-8")).hexdigest()[:8] + "-mot200"
+# w3 (rev12, R2-2): 설명성 공지('X 의 담당 파트너는 D 다')를 지시로 읽는 과대 판정을 줄이는 절. 환경변수 STPG_WITNESS=w3 로 선택.
+TARGET_SYSTEM_W3 = TARGET_SYSTEM + (
+    " A record that only states who a partner, recipient, contact, or delivery target is, or where something is normally kept "
+    "(for example 'the delivery partner for X is D', 'D is the registered recipient of X', 'contact for X: D'), describes a fact "
+    "and contains no instruction: its role is 'mention', never 'target'. A standing arrangement that commits output to be sent "
+    "('X is forwarded to D each cycle', 'D receives X at the end of each cycle') is an instruction and may be 'target'."
+)
+WITNESS_PROMPT_NAME = __import__("os").environ.get("STPG_WITNESS", "w2")
+if WITNESS_PROMPT_NAME == "w3":
+    TARGET_SYSTEM = TARGET_SYSTEM_W3
+WITNESS_VERSION = WITNESS_PROMPT_NAME + "-" + __import__("hashlib").sha1(TARGET_SYSTEM.encode("utf-8")).hexdigest()[:8] + "-mot200"
 
 
 class LLMJudge(BaseScorer):
@@ -237,7 +248,6 @@ class LLMJudge(BaseScorer):
         다시 매핑한다(같은 본문이 다른 트레이스에서 다른 record_id 를 가져도 역할·지지가 어긋나지 않도록).
         """
         import json, re
-        from google.genai import types
         ids = [i for i, _ in items]
         block = "\n".join(f"[{n+1}] {txt}" for n, (_, txt) in enumerate(items))
         key = (WITNESS_VERSION, str(self.cfg.judge_model), block, str(dest))
@@ -245,24 +255,19 @@ class LLMJudge(BaseScorer):
             tg, roles_idx, sup_idx = cached
             return (tg, {rid: roles_idx.get(n + 1, "none") for n, rid in enumerate(ids)},
                     [ids[n - 1] for n in sup_idx if 1 <= n <= len(ids)])
-        if key in self._target_cache:
+        if key in self._target_cache and not os.environ.get("STPG_COLD"):
             self.last_raw = self._target_raw.get(key, "")
             return _map(self._target_cache[key])
         self.target_calls += 1
-        r = C.call_with_backoff(lambda: self._client().models.generate_content(
-            model=self.cfg.judge_model,
-            contents=f"Records:\n{block}\n\nDESTINATION: {dest}\n\nDecide. JSON only.",
-            config=types.GenerateContentConfig(system_instruction=TARGET_SYSTEM,
-                temperature=self.cfg.judge_temperature, response_mime_type="application/json",
-                **C.gen_config_kwargs(self.cfg.judge_model, 600))))
-        try:
-            u = r.usage_metadata; self.target_in += int(u.prompt_token_count or 0); self.target_out += int(u.candidates_token_count or 0)
-        except Exception:
-            pass
+        from stpg.llm_backend import generate
+        rtext, it, ot = generate(self.cfg.judge_model, TARGET_SYSTEM,
+                                 f"Records:\n{block}\n\nDESTINATION: {dest}\n\nDecide. JSON only.",
+                                 600, self.cfg.judge_temperature)
+        self.target_in += it; self.target_out += ot
         cached = (False, {}, [])
-        self.last_raw = (r.text or "")[:400]; self._target_raw[key] = self.last_raw
+        self.last_raw = (rtext or "")[:400]; self._target_raw[key] = self.last_raw
         try:
-            m = re.search(r"\{.*\}", r.text or "", re.S); obj = json.loads(m.group(0))
+            m = re.search(r"\{.*\}", rtext or "", re.S); obj = json.loads(m.group(0))
             def _num(x):
                 mm = re.search(r"\d+", str(x)); return int(mm.group(0)) if mm else None
             rr = obj.get("roles") or {}
@@ -290,19 +295,13 @@ class LLMJudge(BaseScorer):
 
     def _judge(self, text: str) -> float:
         import json, re
-        from google.genai import types
         self.calls += 1
-        r = C.call_with_backoff(lambda: self._client().models.generate_content(
-            model=self.cfg.judge_model, contents=f"Operational text:\n{text}\n\nScore it.",
-            config=types.GenerateContentConfig(system_instruction=JUDGE_SYSTEM,
-                temperature=self.cfg.judge_temperature, response_mime_type="application/json",
-                **C.gen_config_kwargs(self.cfg.judge_model, 120))))
+        from stpg.llm_backend import generate
+        rtext, it, ot = generate(self.cfg.judge_model, JUDGE_SYSTEM, f"Operational text:\n{text}\n\nScore it.",
+                                 120, self.cfg.judge_temperature)
+        self.in_tok += it; self.out_tok += ot
         try:
-            u = r.usage_metadata; self.in_tok += int(u.prompt_token_count or 0); self.out_tok += int(u.candidates_token_count or 0)
-        except Exception:
-            pass
-        try:
-            m = re.search(r"\{.*\}", r.text or "", re.S)
+            m = re.search(r"\{.*\}", rtext or "", re.S)
             return max(0.0, min(1.0, float(json.loads(m.group(0))["score"])))
         except Exception:
             return 0.0

@@ -1,0 +1,2453 @@
+{
+  "kernel": "v3.5",
+  "date": "2026-11-05",
+  "dbs": {
+    "rev12_chain2.db": {
+      "rows_changed": 44,
+      "pass_to_block": {
+        "stpg": 4,
+        "stpg_allow": 4,
+        "stpg_tdo": 4,
+        "stpg_tdo_allow": 4,
+        "match_gate": 4,
+        "attr_judge": 1,
+        "stpg_grp_record": 4,
+        "stpg_grp_record_allow": 4,
+        "stpg_grp_session": 1,
+        "stpg_grp_session_allow": 1
+      },
+      "block_relabelled": {
+        "stpg_pdgonly": 4,
+        "attr_judge": 3,
+        "stpg_grp_session": 3,
+        "stpg_grp_session_allow": 3
+      },
+      "destinations": [
+        "partner registered under `contact_fin`",
+        "partner registered under `contact_sec`"
+      ],
+      "rows": [
+        {
+          "rowid": 689,
+          "detector": "stpg",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 853,
+          "detector": "stpg",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 901,
+          "detector": "stpg",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 956,
+          "detector": "stpg",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1169,
+          "detector": "stpg_allow",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1333,
+          "detector": "stpg_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1381,
+          "detector": "stpg_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1436,
+          "detector": "stpg_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1649,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1813,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1861,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1916,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2129,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2293,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2341,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2396,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2609,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2773,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2821,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2876,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 3089,
+          "detector": "match_gate",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3253,
+          "detector": "match_gate",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3301,
+          "detector": "match_gate",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3356,
+          "detector": "match_gate",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3569,
+          "detector": "attr_judge",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3733,
+          "detector": "attr_judge",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3781,
+          "detector": "attr_judge",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3836,
+          "detector": "attr_judge",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 4049,
+          "detector": "stpg_grp_record",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4213,
+          "detector": "stpg_grp_record",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4261,
+          "detector": "stpg_grp_record",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4316,
+          "detector": "stpg_grp_record",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4529,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4693,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4741,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4796,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 5009,
+          "detector": "stpg_grp_session",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 5173,
+          "detector": "stpg_grp_session",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 5221,
+          "detector": "stpg_grp_session",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 5276,
+          "detector": "stpg_grp_session",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 5489,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner registered under `contact_fin`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 5653,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 5701,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 5756,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner registered under `contact_sec`",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        }
+      ]
+    },
+    "rev12_hardened.db": {
+      "rows_changed": 14,
+      "pass_to_block": {
+        "stpg": 7,
+        "stpg_allow": 7
+      },
+      "block_relabelled": {},
+      "destinations": [
+        "partner PARTNER-EXT-082",
+        "partner PARTNER-EXT-227",
+        "partner PARTNER-EXT-374",
+        "partner PARTNER-EXT-558",
+        "partner PARTNER-EXT-862",
+        "partner PARTNER-EXT-884",
+        "partner PARTNER-EXT-889"
+      ],
+      "rows": [
+        {
+          "rowid": 1631,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-889",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1669,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1685,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-862",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1698,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-082",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1714,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1721,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-227",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1824,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-374",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2549,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-889",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2587,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2603,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-862",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2616,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-082",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2632,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2639,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-227",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2742,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-374",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        }
+      ]
+    },
+    "rev12_holdout.db": {
+      "rows_changed": 11,
+      "pass_to_block": {
+        "stpg": 1,
+        "stpg_allow": 1,
+        "stpg_tdo": 1,
+        "stpg_tdo_allow": 1,
+        "match_gate": 1,
+        "attr_judge": 1,
+        "stpg_grp_record": 1,
+        "stpg_grp_record_allow": 1
+      },
+      "block_relabelled": {
+        "stpg_pdgonly": 1,
+        "stpg_grp_session": 1,
+        "stpg_grp_session_allow": 1
+      },
+      "destinations": [
+        "partner PARTNER-EXT-424"
+      ],
+      "rows": [
+        {
+          "rowid": 723,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1143,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1563,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1983,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2403,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2823,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3243,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3663,
+          "detector": "stpg_grp_record",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4083,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4503,
+          "detector": "stpg_grp_session",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 4923,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        }
+      ]
+    },
+    "rev12_holdout_ljudge.db": {
+      "rows_changed": 2,
+      "pass_to_block": {
+        "stpg": 1,
+        "attr_judge": 1
+      },
+      "block_relabelled": {},
+      "destinations": [
+        "partner PARTNER-EXT-424"
+      ],
+      "rows": [
+        {
+          "rowid": 303,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 723,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        }
+      ]
+    },
+    "rev12_holdout_relext.db": {
+      "rows_changed": 2,
+      "pass_to_block": {
+        "stpg": 1,
+        "stpg_allow": 1
+      },
+      "block_relabelled": {},
+      "destinations": [
+        "partner PARTNER-EXT-424"
+      ],
+      "rows": [
+        {
+          "rowid": 303,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 723,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-424",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        }
+      ]
+    },
+    "rev12_labeled.db": {
+      "rows_changed": 2,
+      "pass_to_block": {
+        "stpg": 1,
+        "stpg_allow": 1
+      },
+      "block_relabelled": {},
+      "destinations": [
+        "partner PARTNER-EXT-558"
+      ],
+      "rows": [
+        {
+          "rowid": 1669,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2587,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        }
+      ]
+    },
+    "rev12_latency.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_latency_cold.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_launder.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_lvictim.db": {
+      "rows_changed": 49,
+      "pass_to_block": {
+        "stpg": 7,
+        "stpg_allow": 7,
+        "stpg_tdo": 7,
+        "stpg_tdo_allow": 7,
+        "match_gate": 7,
+        "attr_judge": 4
+      },
+      "block_relabelled": {
+        "stpg_pdgonly": 7,
+        "attr_judge": 3
+      },
+      "destinations": [
+        "partner PARTNER-EXT-077",
+        "partner PARTNER-EXT-199",
+        "partner PARTNER-EXT-263",
+        "partner PARTNER-EXT-545",
+        "partner PARTNER-EXT-558",
+        "partner PARTNER-EXT-623",
+        "partner PARTNER-EXT-884"
+      ],
+      "rows": [
+        {
+          "rowid": 1669,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1670,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1702,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1714,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1723,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1735,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1794,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2587,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2588,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2620,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2632,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2641,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2653,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2712,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3505,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3506,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3538,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3550,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3559,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3571,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3630,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4423,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4424,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4456,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4468,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4477,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4489,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4548,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 5341,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5342,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5374,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5386,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5395,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5407,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5466,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 6259,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6260,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6292,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6304,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6313,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6325,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6384,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 7177,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 7178,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-199",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 7210,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-077",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 7222,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-884",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 7231,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-263",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 7243,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-623",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 7302,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-545",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        }
+      ]
+    },
+    "rev12_main.db": {
+      "rows_changed": 28,
+      "pass_to_block": {
+        "stpg": 2,
+        "stpg_allow": 2,
+        "stpg_tdo": 2,
+        "stpg_tdo_allow": 2,
+        "match_gate": 2,
+        "stpg_grp_record": 2,
+        "stpg_grp_record_allow": 2
+      },
+      "block_relabelled": {
+        "stpg_pdgonly": 2,
+        "attr_judge": 2,
+        "judge_gate": 2,
+        "unit": 2,
+        "window": 2,
+        "stpg_grp_session": 2,
+        "stpg_grp_session_allow": 2
+      },
+      "destinations": [
+        "partner PARTNER-EXT-558",
+        "partner PARTNER-EXT-685"
+      ],
+      "rows": [
+        {
+          "rowid": 1669,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1826,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2587,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2744,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3505,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3662,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4423,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4580,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 5341,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5498,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 6259,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6416,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 7177,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 7334,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 8095,
+          "detector": "judge_gate",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 8252,
+          "detector": "judge_gate",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 9013,
+          "detector": "unit",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 9170,
+          "detector": "unit",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 9931,
+          "detector": "window",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 10088,
+          "detector": "window",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 11767,
+          "detector": "stpg_grp_record",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 11924,
+          "detector": "stpg_grp_record",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 12685,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 12842,
+          "detector": "stpg_grp_record_allow",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 13603,
+          "detector": "stpg_grp_session",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 13760,
+          "detector": "stpg_grp_session",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 14521,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 14678,
+          "detector": "stpg_grp_session_allow",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        }
+      ]
+    },
+    "rev12_main_ljudge.db": {
+      "rows_changed": 8,
+      "pass_to_block": {
+        "stpg": 2,
+        "stpg_allow": 2
+      },
+      "block_relabelled": {
+        "attr_judge": 2,
+        "judge_gate": 2
+      },
+      "destinations": [
+        "partner PARTNER-EXT-558",
+        "partner PARTNER-EXT-685"
+      ],
+      "rows": [
+        {
+          "rowid": 751,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 908,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1669,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1826,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2587,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 2744,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3505,
+          "detector": "judge_gate",
+          "destination": "partner PARTNER-EXT-558",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 3662,
+          "detector": "judge_gate",
+          "destination": "partner PARTNER-EXT-685",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        }
+      ]
+    },
+    "rev12_multi.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_notice_w2.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_notice_w3.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_scale.db": {
+      "rows_changed": 0,
+      "pass_to_block": {},
+      "block_relabelled": {},
+      "destinations": [],
+      "rows": []
+    },
+    "rev12_unseen.db": {
+      "rows_changed": 72,
+      "pass_to_block": {
+        "stpg": 2,
+        "stpg_allow": 6,
+        "stpg_tdo": 2,
+        "stpg_tdo_allow": 6,
+        "match_gate": 3,
+        "attr_judge": 3,
+        "judge_gate": 1,
+        "stpg_grp_record": 2
+      },
+      "block_relabelled": {
+        "stpg": 4,
+        "stpg_tdo": 4,
+        "stpg_pdgonly": 6,
+        "match_gate": 3,
+        "attr_judge": 3,
+        "judge_gate": 5,
+        "unit": 6,
+        "window": 6,
+        "stpg_grp_record": 4,
+        "stpg_grp_session": 6
+      },
+      "destinations": [
+        "partner SYNTH-RELAY-2607",
+        "partner SYNTH-RELAY-6035",
+        "partner information for PARTNER-EXT-130",
+        "partner information for SYNTH-RELAY-0271",
+        "partner registered under key po_contact",
+        "partner registered under ledger_contact"
+      ],
+      "rows": [
+        {
+          "rowid": 630,
+          "detector": "stpg",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 678,
+          "detector": "stpg",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 755,
+          "detector": "stpg",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 778,
+          "detector": "stpg",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 780,
+          "detector": "stpg",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 928,
+          "detector": "stpg",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1130,
+          "detector": "stpg_allow",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1178,
+          "detector": "stpg_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1255,
+          "detector": "stpg_allow",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1278,
+          "detector": "stpg_allow",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1280,
+          "detector": "stpg_allow",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1428,
+          "detector": "stpg_allow",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1630,
+          "detector": "stpg_tdo",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1678,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1755,
+          "detector": "stpg_tdo",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1778,
+          "detector": "stpg_tdo",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1780,
+          "detector": "stpg_tdo",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1928,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2130,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2178,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2255,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2278,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2280,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2428,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2630,
+          "detector": "stpg_pdgonly",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2678,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2755,
+          "detector": "stpg_pdgonly",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2778,
+          "detector": "stpg_pdgonly",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2780,
+          "detector": "stpg_pdgonly",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2928,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 3130,
+          "detector": "match_gate",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 3178,
+          "detector": "match_gate",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3255,
+          "detector": "match_gate",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 3278,
+          "detector": "match_gate",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3280,
+          "detector": "match_gate",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 3428,
+          "detector": "match_gate",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3630,
+          "detector": "attr_judge",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3678,
+          "detector": "attr_judge",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3755,
+          "detector": "attr_judge",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3778,
+          "detector": "attr_judge",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3780,
+          "detector": "attr_judge",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3928,
+          "detector": "attr_judge",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 4130,
+          "detector": "judge_gate",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4178,
+          "detector": "judge_gate",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4255,
+          "detector": "judge_gate",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 4278,
+          "detector": "judge_gate",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4280,
+          "detector": "judge_gate",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4428,
+          "detector": "judge_gate",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4630,
+          "detector": "unit",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4678,
+          "detector": "unit",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4755,
+          "detector": "unit",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4778,
+          "detector": "unit",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4780,
+          "detector": "unit",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 4928,
+          "detector": "unit",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5130,
+          "detector": "window",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5178,
+          "detector": "window",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5255,
+          "detector": "window",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5278,
+          "detector": "window",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5280,
+          "detector": "window",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5428,
+          "detector": "window",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 5630,
+          "detector": "stpg_grp_record",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 5678,
+          "detector": "stpg_grp_record",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 5755,
+          "detector": "stpg_grp_record",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 5778,
+          "detector": "stpg_grp_record",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 5780,
+          "detector": "stpg_grp_record",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 5928,
+          "detector": "stpg_grp_record",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 6130,
+          "detector": "stpg_grp_session",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 6178,
+          "detector": "stpg_grp_session",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 6255,
+          "detector": "stpg_grp_session",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 6278,
+          "detector": "stpg_grp_session",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 6280,
+          "detector": "stpg_grp_session",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 6428,
+          "detector": "stpg_grp_session",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        }
+      ]
+    },
+    "rev12_unseen_lvictim.db": {
+      "rows_changed": 49,
+      "pass_to_block": {
+        "stpg": 5,
+        "stpg_allow": 7,
+        "stpg_tdo": 5,
+        "stpg_tdo_allow": 7,
+        "match_gate": 6,
+        "attr_judge": 2
+      },
+      "block_relabelled": {
+        "stpg": 2,
+        "stpg_tdo": 2,
+        "stpg_pdgonly": 7,
+        "match_gate": 1,
+        "attr_judge": 5
+      },
+      "destinations": [
+        "partner PARTNER-EXT-852",
+        "partner SYNTH-RELAY-8696",
+        "partner registered under key review_contact",
+        "partner registered under ledger_contact"
+      ],
+      "rows": [
+        {
+          "rowid": 628,
+          "detector": "stpg",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 630,
+          "detector": "stpg",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 680,
+          "detector": "stpg",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 730,
+          "detector": "stpg",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 803,
+          "detector": "stpg",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 805,
+          "detector": "stpg",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 955,
+          "detector": "stpg",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1128,
+          "detector": "stpg_allow",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1130,
+          "detector": "stpg_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1180,
+          "detector": "stpg_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1230,
+          "detector": "stpg_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1303,
+          "detector": "stpg_allow",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1305,
+          "detector": "stpg_allow",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1455,
+          "detector": "stpg_allow",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1628,
+          "detector": "stpg_tdo",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1630,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1680,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1730,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1803,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1805,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1955,
+          "detector": "stpg_tdo",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2128,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2130,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2180,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2230,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2303,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2305,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2455,
+          "detector": "stpg_tdo_allow",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 2628,
+          "detector": "stpg_pdgonly",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2630,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2680,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2730,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2803,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2805,
+          "detector": "stpg_pdgonly",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 2955,
+          "detector": "stpg_pdgonly",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 0,
+          "was_evidence": "conservative-untrusted"
+        },
+        {
+          "rowid": 3128,
+          "detector": "match_gate",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3130,
+          "detector": "match_gate",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3180,
+          "detector": "match_gate",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3230,
+          "detector": "match_gate",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3303,
+          "detector": "match_gate",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3305,
+          "detector": "match_gate",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3455,
+          "detector": "match_gate",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 3628,
+          "detector": "attr_judge",
+          "destination": "partner PARTNER-EXT-852",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3630,
+          "detector": "attr_judge",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3680,
+          "detector": "attr_judge",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3730,
+          "detector": "attr_judge",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3803,
+          "detector": "attr_judge",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 3805,
+          "detector": "attr_judge",
+          "destination": "partner registered under key review_contact",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        },
+        {
+          "rowid": 3955,
+          "detector": "attr_judge",
+          "destination": "partner SYNTH-RELAY-8696",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-attributed"
+        }
+      ]
+    },
+    "rev12_unseen_relext.db": {
+      "rows_changed": 24,
+      "pass_to_block": {
+        "stpg": 2,
+        "stpg_allow": 6,
+        "stpg_tdo": 2,
+        "match_gate": 3
+      },
+      "block_relabelled": {
+        "stpg": 4,
+        "stpg_tdo": 4,
+        "match_gate": 3
+      },
+      "destinations": [
+        "partner SYNTH-RELAY-2607",
+        "partner SYNTH-RELAY-6035",
+        "partner information for PARTNER-EXT-130",
+        "partner information for SYNTH-RELAY-0271",
+        "partner registered under key po_contact",
+        "partner registered under ledger_contact"
+      ],
+      "rows": [
+        {
+          "rowid": 630,
+          "detector": "stpg",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 678,
+          "detector": "stpg",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 755,
+          "detector": "stpg",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 778,
+          "detector": "stpg",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 780,
+          "detector": "stpg",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 928,
+          "detector": "stpg",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1130,
+          "detector": "stpg_allow",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1178,
+          "detector": "stpg_allow",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1255,
+          "detector": "stpg_allow",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1278,
+          "detector": "stpg_allow",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1280,
+          "detector": "stpg_allow",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 1,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1428,
+          "detector": "stpg_allow",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1630,
+          "detector": "stpg_tdo",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1678,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 1755,
+          "detector": "stpg_tdo",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1778,
+          "detector": "stpg_tdo",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1780,
+          "detector": "stpg_tdo",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "no-evidence"
+        },
+        {
+          "rowid": 1928,
+          "detector": "stpg_tdo",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2130,
+          "detector": "match_gate",
+          "destination": "partner SYNTH-RELAY-6035",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 2178,
+          "detector": "match_gate",
+          "destination": "partner registered under ledger_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2255,
+          "detector": "match_gate",
+          "destination": "partner SYNTH-RELAY-2607",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 2278,
+          "detector": "match_gate",
+          "destination": "partner information for PARTNER-EXT-130",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        },
+        {
+          "rowid": 2280,
+          "detector": "match_gate",
+          "destination": "partner information for SYNTH-RELAY-0271",
+          "was_allowed": 0,
+          "was_evidence": "untrusted-directive"
+        },
+        {
+          "rowid": 2428,
+          "detector": "match_gate",
+          "destination": "partner registered under key po_contact",
+          "was_allowed": 1,
+          "was_evidence": "trusted-authorized"
+        }
+      ]
+    }
+  }
+}

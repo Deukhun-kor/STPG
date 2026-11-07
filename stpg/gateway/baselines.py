@@ -91,7 +91,6 @@ class AttributionJudge(_Base):
         if key in self.cache:
             return self.cache[key]
         from stpg import config as C
-        from google.genai import types
         tn = {C.TRUST_EXTERNAL: "external/untrusted", C.TRUST_AGENT_INGEST: "ingest-agent/untrusted",
               C.TRUST_AGENT_OPS: "operations-agent/trusted", C.TRUST_SYSTEM: "system/trusted"}
         lines = []
@@ -102,18 +101,12 @@ class AttributionJudge(_Base):
         user = ("Records read by the agent:\n" + "\n".join(lines) +
                 f"\n\nThe agent is about to route output to destination: {dest}\nAttribute and decide. JSON only.")
         self.judge.calls += 1
-        resp = C.call_with_backoff(lambda: self.judge._client().models.generate_content(
-            model=self.judge.cfg.judge_model, contents=user,
-            config=types.GenerateContentConfig(system_instruction=ATTR_SYSTEM, temperature=0.0,
-                                               response_mime_type="application/json",
-                                               **C.gen_config_kwargs(self.judge.cfg.judge_model, 600))))
-        try:
-            u = resp.usage_metadata; self.judge.in_tok += int(u.prompt_token_count or 0); self.judge.out_tok += int(u.candidates_token_count or 0)
-        except Exception:
-            pass
+        from stpg.llm_backend import generate
+        rtext, it, ot = generate(self.judge.cfg.judge_model, ATTR_SYSTEM, user, 600, 0.0)
+        self.judge.in_tok += it; self.judge.out_tok += ot
         out = {"supporting_ids": [], "authorized": False}
         try:
-            m = re.search(r"\{.*\}", resp.text or "", re.S); obj = json.loads(m.group(0))
+            m = re.search(r"\{.*\}", rtext or "", re.S); obj = json.loads(m.group(0))
             out["supporting_ids"] = [str(x) for x in obj.get("supporting_ids", [])]
             out["authorized"] = bool(obj.get("authorized", False))
         except Exception:
@@ -131,6 +124,9 @@ class AttributionJudge(_Base):
         if internal is True or not d:
             detect["evidence"] = "internal"; return True, "", detect
         from stpg.gateway import binding as B
+        if B.is_malformed(dest):                                     # 커널 사전검사 (0): 식별자 하나가 아닌 목적지
+            G.STATS["malformed"] += 1
+            detect["evidence"] = "malformed-destination"; return False, "destination is not a single endpoint identifier", detect
         if B.is_reference_token(d, influencing_records):            # 커널 사전검사 (0'): 참조 토큰은 엔드포인트가 아님
             G.STATS["non_endpoint"] += 1
             detect["evidence"] = "non-endpoint-destination"; return False, "destination is a reference token", detect

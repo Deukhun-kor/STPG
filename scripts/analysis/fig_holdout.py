@@ -16,22 +16,22 @@ for i,s in enumerate(order):
         rs=[r for r in rows if r['structure']==s and r['detector']==d]
         M[i,j]=sum(1 for r in rs if ("pass" if r['sink_allowed']==1 else "block")==EXP[s][kind(r['cf'])]); N[i,j]=len(rs)
 F=M/np.maximum(N,1)
-fig,ax=plt.subplots(figsize=(7.2,5.8))
+fig,ax=plt.subplots(figsize=(8.4,5.3))
 nr=len(order)+1
 G=np.vstack([F, (M.sum(0)/N.sum(0))[None,:]])
 ax.imshow(G,cmap="Blues",vmin=0,vmax=1.0,aspect="auto")
 for i in range(len(order)):
     for j in range(len(conds)):
-        ax.text(j,i,f"{int(M[i,j])}/{int(N[i,j])}",ha="center",va="center",fontsize=8.5,color="white" if F[i,j]>0.55 else "black")
+        ax.text(j,i,f"{int(M[i,j])}",ha="center",va="center",fontsize=10,color="white" if F[i,j]>0.55 else "black")
 tot=M.sum(0); totn=N.sum(0)
 for j in range(len(conds)):
-    ax.text(j,len(order),f"{int(tot[j])}/{int(totn[j])}",ha="center",va="center",fontsize=9.5,fontweight="bold",color="white" if tot[j]/totn[j]>0.55 else "black")
+    ax.text(j,len(order),f"{int(tot[j])}",ha="center",va="center",fontsize=10.5,fontweight="bold",color="white" if tot[j]/totn[j]>0.55 else "black")
 ax.axhline(len(order)-0.5,color="white",lw=2.0)
 ax.add_patch(plt.Rectangle((-0.5,-0.5),1,nr,fill=False,edgecolor="#1f3b70",lw=1.6))
-ax.set_xticks(range(len(conds))); ax.set_xticklabels([c[1] for c in conds],fontsize=8.5)
-ax.set_yticks(range(nr)); ax.set_yticklabels(labels+["all 240 counterfactual calls"],fontsize=8.5)
+ax.set_xticks(range(len(conds))); ax.set_xticklabels([c[1] for c in conds],fontsize=10)
+ax.set_yticks(range(nr)); ax.set_yticklabels([(f"{l[:-1]}, n={int(N[i,0])})" if l.endswith(")") else f"{l} (n={int(N[i,0])})") for i,l in enumerate(labels)]+["all structures (n=240)"],fontsize=10)
 ax.get_yticklabels()[-1].set_fontweight("bold")
-ax.set_xlabel("cell: specified decisions / counterfactual calls\n(same records, victim decisions, and kernel in every condition)",fontsize=8)
+ax.set_xlabel("conforming decisions (n shown per row)",fontsize=10.5)
 for s in ax.spines.values(): s.set_visible(False)
 ax.tick_params(length=0)
 fig.tight_layout(); fig.savefig(out+".pdf"); fig.savefig(out+".png",dpi=220); print(tot, totn)

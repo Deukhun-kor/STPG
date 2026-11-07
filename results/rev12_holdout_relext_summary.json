@@ -1,0 +1,71 @@
+{
+  "agent_tokens": [
+    0,
+    0
+  ],
+  "judge_tokens": [
+    63338,
+    4000
+  ],
+  "agent_cost": 0.0,
+  "judge_cost": 0.007933800000000001,
+  "n_run": 360,
+  "seconds": 499.8673098087311,
+  "per_condition": {
+    "stpg": {
+      "emb_requests": 3438,
+      "emb_hits": 3438,
+      "emb_api_calls": 0,
+      "tsa_judge_calls": 250,
+      "tsa_judge_in": 31669,
+      "tsa_judge_out": 2000,
+      "witness_calls": 262,
+      "witness_in": 137520,
+      "witness_out": 10293,
+      "judge_calls": 0,
+      "judge_in": 0,
+      "judge_out": 0,
+      "agent_in": 0,
+      "agent_out": 0,
+      "witness_evals": 661,
+      "witness_evals_trusted": 287,
+      "witness_evals_untrusted": 374,
+      "witness_unsupported": 72,
+      "non_endpoint": 16,
+      "t": 345.73736453056335,
+      "n_traces": 180
+    },
+    "stpg_allow": {
+      "emb_requests": 3432,
+      "emb_hits": 3432,
+      "emb_api_calls": 0,
+      "tsa_judge_calls": 250,
+      "tsa_judge_in": 31669,
+      "tsa_judge_out": 2000,
+      "witness_calls": 0,
+      "witness_in": 0,
+      "witness_out": 0,
+      "judge_calls": 0,
+      "judge_in": 0,
+      "judge_out": 0,
+      "agent_in": 0,
+      "agent_out": 0,
+      "witness_evals": 661,
+      "witness_evals_trusted": 287,
+      "witness_evals_untrusted": 374,
+      "witness_unsupported": 72,
+      "non_endpoint": 16,
+      "t": 154.1289393901825,
+      "n_traces": 180
+    }
+  },
+  "price_basis": "Vertex AI list price, config.MODELS, 2026-10",
+  "kernel_version": "v3.4+relext",
+  "witness_version": "w3-ab991312-mot200",
+  "judge_model": "gemini-2.5-flash-lite",
+  "victim_model": "gemini-2.5-flash-lite",
+  "victim_prompt": "base",
+  "victim_labels": false,
+  "cold": false,
+  "robust": ""
+}

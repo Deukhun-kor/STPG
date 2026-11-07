@@ -109,7 +109,13 @@ MODELS = {
     "gemini-2.5-fl":   ModelSpec("gemini-2.5-flash-lite", "vertex", 0.10, 0.40),   # 주(확인됨)
     "gemini-2.5-f":    ModelSpec("gemini-2.5-flash", "vertex", 0.30, 2.50),        # 부(모델 수준 비교)
     # (AI Studio 전용/신규세대 — 참고) gemini-3.5-flash-lite 0.30/2.50
+    # rev12 (R3: 다른 모델 계열) Vertex AI Model-as-a-Service, OpenAI 호환 엔드포인트(stpg.llm_backend)
+    #   llama-3.3-70b-instruct-maas 는 2026-10-21 MaaS 종료 -> Llama 4 Maverick (MoE, 17B active / 128 experts), us-east5
+    "llama-4-maverick": ModelSpec("meta/llama-4-maverick-17b-128e-instruct-maas", "vertex-maas", 0.35, 1.15),
+    "llama-4-scout":    ModelSpec("meta/llama-4-scout-17b-16e-instruct-maas", "vertex-maas", 0.25, 0.70),
 }
+# MaaS 정가(USD / 1M tokens; Model Garden 모델 카드의 2026-11 표시가로 확인할 것)
+MAAS_PRICES = {"meta/llama-4-maverick-17b-128e-instruct-maas": (0.35, 1.15), "meta/llama-4-scout-17b-16e-instruct-maas": (0.25, 0.70)}
 
 
 @dataclass

@@ -25,9 +25,9 @@ from stpg import config as C
 from stpg.storage.base import Provenance
 from stpg.gateway import binding as B
 
-KERNEL_VERSION = "v3.3"
+KERNEL_VERSION = "v3.5" + ("+relext" if B.RELATION_EXT else "")   # v3.4: full-path chain trust (R1-2), destination canonicalization (R1-5/R2-3), grouping variants (R1-3/R2-1); v3.5: destination grammar pre-check, whitespace is a word boundary (pre-submission review M1)
 STATS = {"witness_calls": 0, "witness_evals": 0, "witness_evals_trusted": 0, "witness_evals_untrusted": 0,
-         "witness_unsupported": 0, "non_endpoint": 0}
+         "witness_unsupported": 0, "non_endpoint": 0, "malformed": 0}
 _ROLE_RANK = {"prohibited": 4, "mention": 3, "mapping": 2, "none": 1}
 _TARGET_ROLES = {"target", "instruction", "directive", "rule"}   # witness 역할 표기의 동의어 허용
 
@@ -51,25 +51,39 @@ def make_provenance(record: dict, ctx) -> Provenance:
                       origin_endpoint=ctx.origin_endpoint, group_id=lineage)
 
 
+_INTERNAL_CANON = {B.canon(x) for x in C.APPROVED_INTERNAL_DESTINATIONS}
+
+
 def _is_internal(dest: str):
-    d = str(dest or "").strip().rstrip(".,;:")
+    d = B.canon(str(dest or ""))
     if not d:
         return d, None
-    return d, (d in C.APPROVED_INTERNAL_DESTINATIONS)
+    return d, (d in _INTERNAL_CANON)
 
 
-def group_by_lineage(records: list, store) -> dict:
+def group_by_lineage(records: list, store, grouping: str = "lineage") -> dict:
+    """
+    grouping (v3.4 ablation, R1-3/R2-1): 'lineage' = PPT 계보 키(STPG) | 'record' = 레코드 단위 |
+    'session' = 세션 단위(출처 무관). 바인딩·witness·기본값은 동일하며 군집 단위만 바뀐다.
+    """
     groups: dict[str, list] = {}
     for r in records:
         p = store.read_provenance(r["record_id"])
         if p is None:
             r["_provenance"] = {"source_trust": C.TRUST_EXTERNAL, "writer_agent": "unknown",
-                                "writer_priv": C.PRIV_READ, "group_id": f"unknown:{r['record_id']}"}
+                                "writer_priv": C.PRIV_READ, "group_id": f"unknown:{r['record_id']}", "session_id": None}
         else:
             r["_provenance"] = {"source_trust": p.source_trust, "writer_agent": p.writer_agent,
                                 "writer_priv": C.AGENT_PROFILES.get(p.writer_agent, {}).get("priv", C.PRIV_READ),
-                                "group_id": p.group_id}
-        groups.setdefault(r["_provenance"]["group_id"], []).append(r)
+                                "group_id": p.group_id, "session_id": p.session_id}
+        if grouping == "record":
+            gid = f"rec:{r['record_id']}"
+        elif grouping == "session":
+            gid = f"sess:{r['_provenance'].get('session_id') or 'none'}"
+        else:
+            gid = r["_provenance"]["group_id"]
+        r["_provenance"]["group_id"] = gid
+        groups.setdefault(gid, []).append(r)
     return groups
 
 
@@ -97,6 +111,10 @@ def apply_gate(dest, groups: dict, ctx, witness=None, empty_policy: str = "block
     if not d:                                                   # 호출 인자 없음: 게이트 입력이 아님(사전 검증 경로)
         detect["evidence"] = "no-call"
         return True, "", detect
+    if B.is_malformed(dest):                                     # (0) 목적지 문법: 식별자 하나가 아니면(공백·따옴표·괄호) 차단
+        STATS["malformed"] += 1
+        detect.update(evidence="malformed-destination", delta=None)
+        return False, "destination is not a single endpoint identifier", detect
     allrecs = [r for recs in groups.values() for r in recs]
     if B.is_reference_token(d, allrecs):                          # (0') 라우팅 인자가 라벨/키: 최종 엔드포인트 아님
         STATS["non_endpoint"] += 1

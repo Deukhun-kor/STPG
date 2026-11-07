@@ -1,4 +1,4 @@
-# Read-level TSA score E* under the primary judge (gemini-2.5-flash-lite) and the swapped judge (gemini-2.5-flash).
+# Read-level TSA score E* under the primary judge (gemini-2.5-flash-lite) and the swapped judge (Llama 4 Maverick).
 # Usage: python fig_judgeswap.py <rev10_main.db> <rev11b_main_fjudge.db> <out_prefix>
 import sqlite3, sys, numpy as np, matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
 a, b, out = sys.argv[1], sys.argv[2], sys.argv[3]
@@ -11,7 +11,7 @@ def scores(db):
 def auroc(p, n): return float(((p[:, None] > n[None, :]).sum() + 0.5 * (p[:, None] == n[None, :]).sum()) / (len(p) * len(n)))
 fig, axs = plt.subplots(1, 2, figsize=(7.2, 2.8), sharey=True)
 bins = np.linspace(0, 1, 21)
-for ax, (db, title) in zip(axs, [(a, "primary judge: gemini-2.5-flash-lite"), (b, "swapped judge: gemini-2.5-flash")]):
+for ax, (db, title) in zip(axs, [(a, "primary judge: gemini-2.5-flash-lite"), (b, "swapped judge: Llama 4 Maverick")]):
     att, neg, rule = scores(db)
     ax.hist(neg, bins=bins, color="0.75", label=f"non-directive benign (n={len(neg)})", zorder=3)
     ax.hist(att, bins=bins, color="#1f77b4", alpha=0.8, label=f"attack (n={len(att)})", zorder=4)

@@ -1,7 +1,7 @@
 import sqlite3, numpy as np, collections
 from scipy import stats as st
 np.random.seed(11)
-c=sqlite3.connect("rev10_main.db"); c.row_factory=sqlite3.Row
+c=sqlite3.connect(sys.argv[1]); c.row_factory=sqlite3.Row
 rows=[dict(r) for r in c.execute("SELECT * FROM results WHERE cf=''")]
 def auroc(p,n): p=np.asarray(p); n=np.asarray(n); return float(np.mean(p[:,None]>n[None,:])+0.5*np.mean(p[:,None]==n[None,:]))
 nd=lambda r:r['benign_subtype']!='legit_external'

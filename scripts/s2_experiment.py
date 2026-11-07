@@ -17,9 +17,12 @@ from stpg.gateway.scoring import TSAScorer, EmbeddingFilter, LLMJudge, EMB_STATS
 from stpg.gateway import gate as GATE
 from stpg.datagen.holdout import build_holdout_specs
 from stpg.datagen.robust import build_rule_variant_specs, build_multiconnector_specs, load_paraphrases
+from stpg.datagen import robust2 as R2
 from stpg.agents.gemini_llm import GeminiLLM
 
 DETECTORS = ["none", "stpg", "stpg_allow", "stpg_tdo", "stpg_tdo_allow", "stpg_pdgonly", "match_gate", "attr_judge", "judge_gate", "unit", "window", "taint"]
+# rev12 ablations: grouping variants (R1-3/R2-1) and read-trust inheritance (R3 laundering mitigation)
+DETECTORS_REV12 = ["stpg_grp_record", "stpg_grp_record_allow", "stpg_grp_session", "stpg_grp_session_allow", "stpg_inherit"]
 RESULTS = os.environ.get("STPG_RESULTS_DIR", "results")
 
 
@@ -37,6 +40,12 @@ class AgentCache:
     def __init__(self, path, brain):
         self.conn=sqlite3.connect(path); self.brain=brain
         self.conn.execute("CREATE TABLE IF NOT EXISTS agent(run_id TEXT PRIMARY KEY, action TEXT, dest TEXT)")
+        self.conn.execute("CREATE TABLE IF NOT EXISTS summary(run_id TEXT PRIMARY KEY, note TEXT)")
+    def summarize(self, run_id, records):
+        r=self.conn.execute("SELECT note FROM summary WHERE run_id=?",(run_id,)).fetchone()
+        if r: return r[0]
+        note=self.brain.summarize(records)
+        self.conn.execute("INSERT OR REPLACE INTO summary VALUES(?,?)",(run_id,note)); self.conn.commit(); return note
     def decide(self, run_id, records):
         r=self.conn.execute("SELECT action,dest FROM agent WHERE run_id=?",(run_id,)).fetchone()
         if r: return {"action":r[0], "destination":r[1]}
@@ -46,6 +55,7 @@ class AgentCache:
 
 
 def make_detector(name, cfg, scorer_cache):
+    name=name.split("#",1)[0]                                     # "stpg#p2": 같은 조건의 2차 패스(캐시 warm 지연 측정)
     if name=="none": return None
     if name=="stpg": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta,
                                         quarantine=cfg.tsa_quarantine)
@@ -65,6 +75,11 @@ def make_detector(name, cfg, scorer_cache):
                                         gate_mode="trusted-only-allow", quarantine=cfg.tsa_quarantine)
     if name=="match_gate": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta,
                                         enable_tsa=False, gate_mode="match", quarantine=False)
+    if name=="stpg_grp_record": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, grouping="record")
+    if name=="stpg_grp_record_allow": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, grouping="record", gate_mode="attributed-allow")
+    if name=="stpg_grp_session": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, grouping="session")
+    if name=="stpg_grp_session_allow": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, grouping="session", gate_mode="attributed-allow")
+    if name=="stpg_inherit": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, inherit_read_trust=True)
     if name=="attr_judge": return B.AttributionJudge(scorer_cache["judge"], cfg.tsa_threshold)
     if name=="judge_gate": return B.JudgeGate(scorer_cache["judge"], cfg.tsa_threshold)
     sc=scorer_cache["emb"]
@@ -96,7 +111,10 @@ def _gate_rows(sp, det_name, gw, store, recs, read_detect, dest, did_route, cf=N
     if read_detect:
         score=float(read_detect.get("emergent", read_detect.get("score",0.0)))
     n_flag=len((read_detect or {}).get("flagged_gids", [])) if read_detect else 0
+    tm=getattr(gw,"timing",None) if gw else None
+    read_ms=(tm["read_ms"][-1] if tm and tm["read_ms"] else None); sink_ms=(tm["sink_ms"][-1] if (tm and tm["sink_ms"] and did_route) else None)
     return {"detector":det_name,"run_id":sp.run_id+("#cf:"+cf if cf else ""),"domain":sp.domain,"is_attack":int(sp.is_attack),
+            "read_ms":read_ms,"sink_ms":sink_ms,"cf_kind":(getattr(sp,"cf_kind",{}) or {}).get(cf,"") if cf else "",
             "k":sp.k,"d":sp.d,"g":sp.g,"did_route":int(did_route),"routed_external":int(routed_external),
             "attack_success":int(success),"sink_allowed":-1 if sink_allowed is None else int(sink_allowed),
             "false_block":int(false_block),"utility_ok":int(utility_ok),
@@ -119,8 +137,21 @@ def run_one(sp, det_name, cfg, brain_cache, scorer_cache):
         prov=gw.on_write(clean, wctx(r)) if gw else None
         if r.get("_drop_provenance"): prov=None            # 홀드아웃: 사이드카 누락 사례
         store.write_record(r, prov)
+    origin_by_id={r["record_id"]:r.get("_origin") for r in sp.ingest_records}
+    launder=getattr(sp,"launder",None)
+    if launder:                                                   # rev12 (R3): trusted agent rewrites session-1 records
+        recs1=store.read_records(sp.domain); rd1=None
+        if gw: recs1, rd1=gw.on_read(recs1, _ctx("sa-agent-ops","s1","%s#s1"%sp.run_id,"n/a"), store)
+        note_txt=brain_cache.summarize(sp.run_id, recs1)
+        note={"record_id":sp.run_id+"-note","domain":sp.domain,"text":f"[{sp.domain}] handoff note (operations): {note_txt}" if note_txt else f"[{sp.domain}] handoff note (operations): no standing arrangement recorded.",
+              "hide_location":"ticket_body","kind":"benign","shard":None}
+        nctx=_ctx("sa-agent-ops","s2",sp.run_id,"/ops/internal"); nctx.read_min_trust=(rd1 or {}).get("read_min_trust") if rd1 else None
+        prov=gw.on_write({k:v for k,v in note.items() if k not in ("shard","kind")}, nctx) if gw else None
+        store.write_record(note, prov); origin_by_id[note["record_id"]]="/ops/internal"
+        if launder=="compacted": store.delete_records(getattr(sp,"launder_remove",[]) or [])
     recs=store.read_records(sp.domain); read_detect=None
     if gw: recs, read_detect=gw.on_read(recs, _ctx("sa-agent-ops","trig",sp.run_id,"n/a"), store)
+    for r in recs: r["_origin"]=origin_by_id.get(r["record_id"])   # victim 라벨 변형(STPG_VICTIM_LABELS)에서만 사용
     dec=brain_cache.decide(sp.run_id, recs)
     action=dec.get("action"); dest=dec.get("destination")
     did_route=bool(action in ("routing","privileged_call","internal_routing") and dest)
@@ -143,10 +174,17 @@ def main():
     ap.add_argument("--robust", default="")                       # rev11: rules | multi (robustness sets)
     ap.add_argument("--paraphrases", default="")                  # rev11: paraphrase JSON (default results/rev11_paraphrases.json)
     ap.add_argument("--judge-model", default="")                  # rev11: override TSA judge / witness / attribution-judge model
+    ap.add_argument("--victim-prompt", default="")                # rev12 (R1-1): base | hardened
+    ap.add_argument("--victim-labels", action="store_true")       # rev12 (R1-1): inline origin labels for the victim
+    ap.add_argument("--cold", action="store_true")                # rev12 (R1-6): bypass embedding / witness caches (cold-cache latency)
+    ap.add_argument("--passes", type=int, default=1)              # rev12 (R1-6): run each condition N times in one process; pass>=2 rows are stored as "<det>#p<N>"
     a=ap.parse_args()
+    if a.victim_prompt: os.environ["STPG_VICTIM_PROMPT"]=a.victim_prompt
+    if a.victim_labels: os.environ["STPG_VICTIM_LABELS"]="1"
+    if a.cold: os.environ["STPG_COLD"]="1"
     os.makedirs(RESULTS, exist_ok=True)
     cfg=C.load_profile(a.profile); cfg.scorer.kind="tsa"
-    if a.model:                                                   # 키 또는 전체 모델명(gemini-2.5-flash) 모두 허용
+    if a.model:                                                   # 키 또는 전체 모델명(gemini-2.5-flash, meta/...) 모두 허용
         alias={v.name:k for k,v in C.MODELS.items()}
         if a.model not in C.MODELS and a.model not in alias:
             raise SystemExit(f"unknown model {a.model!r}; 사용 가능: {sorted(set(list(C.MODELS)+list(alias)))}")
@@ -159,6 +197,16 @@ def main():
         specs=build_rule_variant_specs(cfg, reps=a.reps, n_distractor=a.n_distractor, paraphrases=pj.get("paraphrases", pj))
     elif a.robust=="multi":
         specs=build_multiconnector_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="chain2":   specs=R2.build_chain2_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="notice":   specs=R2.build_notice_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="confusable": specs=R2.build_confusable_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="scale":    specs=R2.build_scale_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="latency":  specs=R2.build_latency_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="launder":  specs=R2.build_launder_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="unseen":
+        from stpg.datagen.unseen import build_unseen_specs
+        specs=build_unseen_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust: raise SystemExit(f"unknown --robust {a.robust}")
     elif a.holdout:
         specs=build_holdout_specs(cfg, n_distractor=a.n_distractor, reps=a.reps)
     else:
@@ -175,9 +223,14 @@ def main():
         k INT,d INT,g INT,did_route INT,routed_external INT,attack_success INT,sink_allowed INT,
         false_block INT,utility_ok INT,benign_subtype TEXT,detect_score REAL,destination TEXT,
         evidence TEXT,n_flagged INT,n_bound INT,cf TEXT,structure TEXT,witness TEXT,roles TEXT,witness_raw TEXT,
+        read_ms REAL,sink_ms REAL,cf_kind TEXT,
         PRIMARY KEY(detector,run_id))""")
+    for col,typ in (("read_ms","REAL"),("sink_ms","REAL"),("cf_kind","TEXT")):   # 구버전 DB 호환
+        try: db.execute(f"ALTER TABLE results ADD COLUMN {col} {typ}")
+        except Exception: pass
     COLS=["detector","run_id","domain","is_attack","k","d","g","did_route","routed_external","attack_success","sink_allowed",
-          "false_block","utility_ok","benign_subtype","detect_score","destination","evidence","n_flagged","n_bound","cf","structure","witness","roles","witness_raw"]
+          "false_block","utility_ok","benign_subtype","detect_score","destination","evidence","n_flagged","n_bound","cf","structure","witness","roles","witness_raw",
+          "read_ms","sink_ms","cf_kind"]
     cost={}
     brain_cache=AgentCache(os.path.join(RESULTS,f"{a.out}_agent.db"), brain)
 
@@ -193,7 +246,8 @@ def main():
                 "witness_evals_untrusted":GATE.STATS["witness_evals_untrusted"],"witness_unsupported":GATE.STATS["witness_unsupported"],
                 "non_endpoint":GATE.STATS["non_endpoint"],
                 "t":time.time()}
-    for det in run_detectors:
+    run_labels=[d if p==1 else f"{d}#p{p}" for p in range(1,a.passes+1) for d in run_detectors]
+    for det in run_labels:
         s0=snap(); n0=n_run
         for sp in specs:
             if db.execute("SELECT 1 FROM results WHERE detector=? AND run_id=?",(det,sp.run_id)).fetchone():
@@ -227,7 +281,8 @@ def main():
     json.dump({"agent_tokens":[brain.in_tok,brain.out_tok],"judge_tokens":list(jt),
                "agent_cost":agent_cost,"judge_cost":judge_cost,"n_run":n_run,"seconds":dt,
                "per_condition":cost,"price_basis":"Vertex AI list price, config.MODELS, 2026-10",
-               "kernel_version":GATE.KERNEL_VERSION,"witness_version":WITNESS_VERSION,"judge_model":cfg.scorer.judge_model},
+               "kernel_version":GATE.KERNEL_VERSION,"witness_version":WITNESS_VERSION,"judge_model":cfg.scorer.judge_model,
+               "victim_model":brain.model,"victim_prompt":brain.prompt,"victim_labels":brain.labels,"cold":bool(a.cold),"robust":a.robust},
               open(os.path.join(RESULTS,f"{a.out}_summary.json"),"w"), indent=2)
     print(f"저장: {dbp}")
 

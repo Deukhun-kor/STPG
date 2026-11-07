@@ -19,3 +19,12 @@ Seeds: numpy seed 11 (cluster bootstrap), per-domain seed sum(ord(domain)) for t
 - fig_robust.py results/rev11_rules.db results/rev11_multi.db <out>: robustness sets A and B, calls passed / allowed per variant and condition (Figure 9; Table 16 visualized).
 - fig_judgeswap.py results/rev10_main.db results/rev11b_main_fjudge.db <out>: read-level E* histograms of STPG's assembled lineages under the primary (flash-lite) and swapped (flash) judge (Figure 10).
 - rev_robust.py: text tables for sets A, B, C and the second victim (Section 7.8 inputs); lives in scripts/analysis of the code repository.
+
+[v7 revision 1 update 2026-11-05]  all tables of v7 report run 4 (rev12: kernel v3.4, witness w3); rerun the v6 scripts on the rev12 databases:
+  rev_main_defense.py results/rev12_main.db | prf.py results/rev12_main.db | rev_holdout.py results/rev12_holdout.db | rev_witness_semantics.py results/rev12_holdout.db
+  rev_cluster_stats.py results/rev12_main.db | rev_detection_stats.py results/rev12_main.db | rev_operating_points.py results/rev12_main.db
+  fig_scores.py / fig_roc.py / fig_factors.py on rev12_main.db, fig_holdout.py / fig_witness.py on rev12_holdout.db (Figures 4-8)
+- fig_robust.py results/rev12_rules.db results/rev12_multi.db <out>: horizontal bars (Figure 9).
+- fig_judgeswap.py results/rev12_main.db results/rev12_main_ljudge.db <out>: primary judge vs Llama 4 Maverick (Figure 10).
+- fig_unseen.py results/rev12_unseen.db results/rev12_unseen_relext.db <out>: frozen-set conformance matrix with the post-hoc column (Figure 11); run from the repository root.
+- rev12_report.py [--unseen]: every new table of Sections 7.6 and 7.9-7.14 (sets D-I, grouping ablation, latency, laundering, victim prompts, second model family, frozen set); rev12_stage_a.py: descriptive notices under w2 / w3.

@@ -94,17 +94,20 @@ def _trust_of(recs: list) -> tuple[int, int]:
 
 
 def apply_gate(dest, groups: dict, ctx, witness=None, empty_policy: str = "block",
-               conservative: bool = False, authorize_mention: bool = False, untrusted_branch: bool = True):
+               conservative: bool = False, authorize_mention: bool = False, untrusted_branch: bool = True,
+               witness2=None):
     """
     공통 커널. groups: gid -> records(_provenance 부착).
     witness(records, dest) -> (targets: bool, roles: {record_id: role}, support: [record_id]) :
         목적지 조건부 지시 판정(어댑터가 제공; None 이면 판정 없음). 커널이 지원 경로를 검증한다.
+    witness2 (rev13, R2-1 round 2): 두 번째 모델 계열의 witness. 신뢰 계보의 승인(PASS 경로)에만 적용되며, 두 witness 가
+        모두 검증된 'target' 판정을 내야 승인 근거가 된다(witness agreement). 비신뢰 분기와 기본값은 그대로다.
     반환 (allowed, reason, detect). detect["evidence"] 는 결정 분기 이름(감사·집계용).
     """
     d, dest_internal = _is_internal(dest)
     detect = {"destination": d or None, "dest_internal": dest_internal, "external_route": (dest_internal is False),
               "evidence": None, "bound_gids": [], "min_source_trust": None, "delta": None, "witness": {},
-              "ambiguous": False}
+              "ambiguous": False, "witness2": {}}
     if dest_internal is True:
         detect["evidence"] = "internal"
         return True, "", detect
@@ -158,6 +161,19 @@ def apply_gate(dest, groups: dict, ctx, witness=None, empty_policy: str = "block
             detect["witness"][gid] = "target" if verified else ("unsupported" if tg else _summarize_roles(roles))
             detect["roles"][gid] = {rid: roles.get(rid, "none") for rid in byid}
             tg = verified
+            if witness2 is not None and tg and t >= C.TRUST_AGENT_OPS:   # witness agreement on the PASS path only
+                STATS["witness2_calls"] = STATS.get("witness2_calls", 0) + 1
+                tg2, roles2, support2 = witness2(recs + used, d)
+                sup2 = [rid for rid in support2 if rid in byid]
+                cands2 = sup2 or [rid for rid in byid if roles2.get(rid) in _TARGET_ROLES] or list(byid)
+                verified2 = bool(tg2) and any(
+                    not B.is_mapping_record(byid[rid].get("text", ""))
+                    and B.mentions_any(byid[rid].get("text", ""), adm)
+                    for rid in cands2)
+                detect["witness2"][gid] = "target" if verified2 else ("unsupported" if tg2 else _summarize_roles(roles2))
+                if not verified2:
+                    STATS["witness2_disagree"] = STATS.get("witness2_disagree", 0) + 1
+                tg = verified2
         else:
             tg = authorize_mention                               # matching: 결합(언급) 자체를 지시로 간주
         if not tg:

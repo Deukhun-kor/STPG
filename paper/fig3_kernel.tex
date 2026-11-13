@@ -8,7 +8,7 @@
   arr/.style={-{Triangle[length=1.5mm,width=1.4mm,fill=black!70]},line width=1pt,draw=black!70}]
 % kernel column
 \node[font=\small\bfseries,text=blue!60!black] at (0,12.5) {Decision kernel, STPG realization (Algorithm~2)};
-\node[box,fill=yellow!12] (in) at (0,11.8) {privileged call: destination $\delta$, context lineages $\mathcal{G}$\\$\delta\leftarrow\mathrm{canon}(\delta)$: strip wrapping, fold case and \texttt{-}/\texttt{\_} runs};
+\node[box,fill=yellow!12] (in) at (0,11.8) {privileged call: destination $\delta$, context lineages $\mathcal{G}$\\$\delta\leftarrow\mathrm{canon}(\delta)$: strip wrapping, fold case, collapse \texttt{-}/\texttt{\_} runs};
 \node[dec] (d0) at (0,10.2) {$\delta\in\mathcal{D}_{\mathrm{int}}$ ?};
 \node[dec] (dM) at (0,8.3) {$\delta$ one identifier?\\(no space, quote, bracket)};
 \node[dec] (dE) at (0,6.35) {context resolves\\$\delta$ further?};

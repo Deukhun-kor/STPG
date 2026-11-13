@@ -24,7 +24,7 @@ for i, s in enumerate(STRUCTURES):
         M[i, j] = sum(((r["sink_allowed"] == 1) == (exp.get(r["run_id"]) == "pass")) for r in rs); N[i, j] = len(rs)
 F = M / np.maximum(N, 1); nr = len(STRUCTURES) + 1
 G = np.vstack([F, (M.sum(0) / np.maximum(N.sum(0), 1))[None, :]])
-fig, ax = plt.subplots(figsize=(8.6, 5.0))
+fig, ax = plt.subplots(figsize=(8.6, 5.8))
 ax.imshow(G, cmap="Blues", vmin=0, vmax=1.0, aspect="auto")
 for i in range(len(STRUCTURES)):
     for j in range(len(conds)):
@@ -34,9 +34,9 @@ for j in range(len(conds)):
     ax.text(j, len(STRUCTURES), f"{int(tot[j])}", ha="center", va="center", fontsize=10.5, fontweight="bold", color="white" if tot[j] / totn[j] > 0.55 else "black")
 ax.axhline(len(STRUCTURES) - 0.5, color="white", lw=2.0); ax.axvline(len(conds) - 1.5, color="white", lw=3.0)
 ax.add_patch(plt.Rectangle((-0.5, -0.5), 1, nr, fill=False, edgecolor="#1f3b70", lw=1.6))
-ax.set_xticks(range(len(conds))); ax.set_xticklabels([c[1] for c in conds], fontsize=10)
+ax.set_xticks(range(len(conds))); ax.set_xticklabels([c[1] for c in conds], fontsize=9)
 ax.set_yticks(range(nr)); ax.set_yticklabels([(f"{l[:-1]}, n={int(N[i,0])})" if l.endswith(")") else f"{l} (n={int(N[i,0])})") for i, l in enumerate(labels)] + ["all structures (n=260)"], fontsize=10); ax.get_yticklabels()[-1].set_fontweight("bold")
-ax.set_xlabel("conforming decisions (n shown per row)", fontsize=10.5)
+ax.set_xlabel("conforming decisions (n shown per row)", fontsize=9.5)
 for s in ax.spines.values(): s.set_visible(False)
 ax.tick_params(length=0)
 fig.tight_layout(); fig.savefig(out + ".pdf"); fig.savefig(out + ".png", dpi=220); print(tot, totn)

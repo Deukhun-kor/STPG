@@ -12,7 +12,7 @@ A = [("rule_canonical", "canonical rule (control)"), ("rule_paraphrase", "LLM-pa
      ("rule_format", "identifier surface form"), ("rule_two_records", "directive split over two trusted records")]
 B = [("mc_single", "one connector (control)"), ("mc_two", "two connectors"), ("mc_three", "three connectors"),
      ("mc_two_trustedmap", "registry entry written by operations"), ("mc_nopattern", "mapping outside the relation pattern")]
-fig, axs = plt.subplots(2, 1, figsize=(6.6, 5.5), gridspec_kw={"height_ratios": [7, 5]})
+fig, axs = plt.subplots(2, 1, figsize=(7.4, 6.0), gridspec_kw={"height_ratios": [7, 5]})
 for ax, (db, items, title, xlab) in zip(axs, [(rules, A, "(a) set A: approved transfer to partner A", "calls passed (of 30)"),
                                              (multi, B, "(b) set B: attack to the synthetic sink", "attack calls allowed (of 30)")]):
     R = rows(db); y = np.arange(len(items))[::-1]; h = 0.16
@@ -21,9 +21,10 @@ for ax, (db, items, title, xlab) in zip(axs, [(rules, A, "(a) set A: approved tr
         ax.barh(y + (2 - i) * h, vals, h, color=col, label=lab, zorder=3, edgecolor="white", linewidth=0.4)
         for by, v in zip(y + (2 - i) * h, vals):
             if v == 0: ax.plot([0.25], [by], marker="o", ms=2.2, color=col, zorder=4)          # zero: dot at the axis
-    ax.set_yticks(y); ax.set_yticklabels([l for _, l in items], fontsize=10)
-    ax.set_xlim(0, 31.5); ax.set_xticks([0, 10, 20, 30]); ax.set_xlabel(xlab, fontsize=10); ax.set_title(title, fontsize=11, loc="left")
-    ax.grid(axis="x", color="0.9", lw=0.6, zorder=0); ax.tick_params(axis="x", labelsize=10)
+            elif v != 30: ax.text(v + 0.4, by, str(v), va="center", ha="left", fontsize=8, color="0.25")
+    ax.set_yticks(y); ax.set_yticklabels([l for _, l in items], fontsize=9)
+    ax.set_xlim(0, 34); ax.set_xticks([0, 10, 20, 30]); ax.set_xlabel(xlab, fontsize=9); ax.set_title(title, fontsize=10, loc="left")
+    ax.grid(axis="x", color="0.9", lw=0.6, zorder=0); ax.tick_params(axis="x", labelsize=9)
     for sp in ["top", "right"]: ax.spines[sp].set_visible(False)
-h_, l_ = axs[0].get_legend_handles_labels(); fig.legend(h_, l_, fontsize=10, loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.01))
+h_, l_ = axs[0].get_legend_handles_labels(); fig.legend(h_, l_, fontsize=9, loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.01))
 fig.tight_layout(rect=(0, 0.06, 1, 1)); fig.savefig(out + ".pdf", bbox_inches="tight"); fig.savefig(out + ".png", dpi=220, bbox_inches="tight"); print("ok")

@@ -23,6 +23,10 @@ from stpg.agents.gemini_llm import GeminiLLM
 DETECTORS = ["none", "stpg", "stpg_allow", "stpg_tdo", "stpg_tdo_allow", "stpg_pdgonly", "match_gate", "attr_judge", "judge_gate", "unit", "window", "taint"]
 # rev12 ablations: grouping variants (R1-3/R2-1) and read-trust inheritance (R3 laundering mitigation)
 DETECTORS_REV12 = ["stpg_grp_record", "stpg_grp_record_allow", "stpg_grp_session", "stpg_grp_session_allow", "stpg_inherit"]
+# rev13 (round 2, R2-1): witness agreement -- a trusted lineage authorizes only if the primary witness and a second-family
+# witness (STPG_SECOND_WITNESS, default Llama 4 Maverick) both give a verified target verdict
+DETECTORS_REV13 = ["stpg_dual", "stpg_dual_allow"]
+SECOND_WITNESS = os.environ.get("STPG_SECOND_WITNESS", "meta/llama-4-maverick-17b-128e-instruct-maas")
 RESULTS = os.environ.get("STPG_RESULTS_DIR", "results")
 
 
@@ -80,6 +84,8 @@ def make_detector(name, cfg, scorer_cache):
     if name=="stpg_grp_session": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, grouping="session")
     if name=="stpg_grp_session_allow": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, grouping="session", gate_mode="attributed-allow")
     if name=="stpg_inherit": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, inherit_read_trust=True)
+    if name=="stpg_dual": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, second_scorer=scorer_cache["tsa2"])
+    if name=="stpg_dual_allow": return STPGGateway(scorer_cache["tsa"], cfg.tsa_threshold, cfg.pdg_min_delta, second_scorer=scorer_cache["tsa2"], gate_mode="attributed-allow")
     if name=="attr_judge": return B.AttributionJudge(scorer_cache["judge"], cfg.tsa_threshold)
     if name=="judge_gate": return B.JudgeGate(scorer_cache["judge"], cfg.tsa_threshold)
     sc=scorer_cache["emb"]
@@ -101,6 +107,7 @@ def _gate_rows(sp, det_name, gw, store, recs, read_detect, dest, did_route, cf=N
             sink_allowed=ok
             if _d:
                 evidence=_d.get("evidence"); n_bound=len(_d.get("bound_gids") or []); wit=";".join(f"{k}:{v}" for k,v in (_d.get("witness") or {}).items())
+                if _d.get("witness2"): wit += " |2| " + ";".join(f"{k}:{v}" for k,v in _d["witness2"].items())
                 roles=json.dumps(_d.get("roles") or {}); raw=str(_d.get("witness_raw") or "")
         else:
             sink_allowed=True
@@ -206,6 +213,17 @@ def main():
     elif a.robust=="unseen":
         from stpg.datagen.unseen import build_unseen_specs
         specs=build_unseen_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
+    elif a.robust=="unseen2":                                     # rev14 (run 7): second held-out set, frozen + locked
+        import hashlib, json as _json
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import freeze_rev14
+        if not freeze_rev14.check(): raise SystemExit("rev14 freeze check failed: frozen files changed")
+        from stpg.datagen.unseen2 import build_unseen2_specs, PHRASINGS_FILE
+        lock=_json.load(open(os.path.join(RESULTS,"rev14_phrasings_lock.json"),encoding="utf-8"))
+        sha=hashlib.sha256(open(os.path.join(RESULTS,PHRASINGS_FILE),"rb").read()).hexdigest()
+        if sha!=lock["sha256"]: raise SystemExit("rev14 phrasings file differs from the review lock: rerun review_rev14_phrasings.py")
+        print(f"[preflight] rev14 freeze OK, phrasings lock {sha[:16]} ({lock.get('locked_at')})")
+        specs=build_unseen2_specs(cfg, reps=a.reps, n_distractor=a.n_distractor)
     elif a.robust: raise SystemExit(f"unknown --robust {a.robust}")
     elif a.holdout:
         specs=build_holdout_specs(cfg, n_distractor=a.n_distractor, reps=a.reps)
@@ -217,6 +235,11 @@ def main():
 
     brain=GeminiLLM(cfg.model)
     scorer_cache={"tsa":TSAScorer(cfg.scorer), "emb":EmbeddingFilter(cfg.scorer), "judge":LLMJudge(cfg.scorer)}
+    if any(d.split("#",1)[0] in DETECTORS_REV13 for d in run_detectors):   # second-family witness (rev13)
+        import dataclasses
+        cfg2=dataclasses.replace(cfg.scorer, judge_model=SECOND_WITNESS)
+        scorer_cache["tsa2"]=TSAScorer(cfg2)
+        print(f"[preflight] second witness = {SECOND_WITNESS}")
     dbp=os.path.join(RESULTS, f"{a.out}.db")
     db=sqlite3.connect(dbp)
     db.execute("""CREATE TABLE IF NOT EXISTS results(detector TEXT,run_id TEXT,domain TEXT,is_attack INT,
@@ -245,6 +268,9 @@ def main():
                 "witness_evals":GATE.STATS["witness_evals"],"witness_evals_trusted":GATE.STATS["witness_evals_trusted"],
                 "witness_evals_untrusted":GATE.STATS["witness_evals_untrusted"],"witness_unsupported":GATE.STATS["witness_unsupported"],
                 "non_endpoint":GATE.STATS["non_endpoint"],
+                "witness2_calls":(scorer_cache["tsa2"]._casc.second.target_calls if "tsa2" in scorer_cache else 0),
+                "witness2_disagree":GATE.STATS.get("witness2_disagree",0),
+                "witness2_evals":GATE.STATS.get("witness2_calls",0),   # logical second-witness evaluations (one per primary-verified trusted lineage, before the gateway cache); witness2_calls = API requests
                 "t":time.time()}
     run_labels=[d if p==1 else f"{d}#p{p}" for p in range(1,a.passes+1) for d in run_detectors]
     for det in run_labels:
@@ -282,7 +308,10 @@ def main():
                "agent_cost":agent_cost,"judge_cost":judge_cost,"n_run":n_run,"seconds":dt,
                "per_condition":cost,"price_basis":"Vertex AI list price, config.MODELS, 2026-10",
                "kernel_version":GATE.KERNEL_VERSION,"witness_version":WITNESS_VERSION,"judge_model":cfg.scorer.judge_model,
-               "victim_model":brain.model,"victim_prompt":brain.prompt,"victim_labels":brain.labels,"cold":bool(a.cold),"robust":a.robust},
+               "victim_model":brain.model,"victim_prompt":brain.prompt,"victim_labels":brain.labels,"cold":bool(a.cold),"robust":a.robust,
+               "relation_ext":bool(os.environ.get("STPG_RELATION_EXT")),"second_witness":(SECOND_WITNESS if "tsa2" in scorer_cache else None),
+               "rev14_freeze_sha":(hashlib.sha256(open(os.path.join(RESULTS,"rev14_freeze.json"),"rb").read()).hexdigest() if a.robust=="unseen2" else None),
+               "rev14_phrasings_sha":(hashlib.sha256(open(os.path.join(RESULTS,"rev14_unseen2_phrasings.json"),"rb").read()).hexdigest() if a.robust=="unseen2" else None)},
               open(os.path.join(RESULTS,f"{a.out}_summary.json"),"w"), indent=2)
     print(f"저장: {dbp}")
 

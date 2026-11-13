@@ -9,7 +9,7 @@ classes=[("attack (k records, untrusted)",lambda r:r['is_attack']==1,"o","#1f77b
          ("approved internal directive (trusted)",lambda r:r['benign_subtype']=='legit_internal',"D","0.7","0.35"),
          ("index note, no directive",lambda r:r['benign_subtype']=='benign',"v","0.85","0.35")]
 rng=np.random.RandomState(0)
-fig,ax=plt.subplots(figsize=(5.6,2.9))
+fig,ax=plt.subplots(figsize=(6.8,3.1))
 for i,(lab,f,mk,fc,ec) in enumerate(classes):
     s=np.array([r['detect_score'] for r in rows if f(r)]); y=len(classes)-1-i+rng.uniform(-0.22,0.22,len(s))
     ax.scatter(s,y,marker=mk,s=14,facecolors=fc,edgecolors=ec,linewidths=0.5,alpha=0.85,zorder=3)
@@ -17,7 +17,7 @@ for i,(lab,f,mk,fc,ec) in enumerate(classes):
 ax.axvline(0.60,color="black",ls="--",lw=1.0); ax.text(0.605,len(classes)-0.45,r"$\tau_{\mathrm{TSA}}$=0.60",fontsize=9.5)
 ax.set_yticks(range(len(classes))); ax.set_yticklabels([c[0] for c in classes][::-1],fontsize=10)
 ax.set_xlim(0,1.0); ax.set_xticks([0,0.2,0.4,0.6,0.8,1.0]); ax.tick_params(axis="x",labelsize=9)
-ax.set_xlabel("assembled-lineage directive score $E^{*}$ of the read",fontsize=10)
+ax.set_xlabel("assembled-lineage directive score $E^{*}$ of the read (maximum over lineages)",fontsize=10)
 for sp in ["top","right"]: ax.spines[sp].set_visible(False)
 ax.grid(axis="x",color="0.85",lw=0.6,zorder=0)
 fig.tight_layout(); fig.savefig(out+".pdf"); fig.savefig(out+".png",dpi=220); print("ok")

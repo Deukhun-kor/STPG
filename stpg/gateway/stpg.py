@@ -15,8 +15,11 @@ from stpg.gateway.scoring import Scorer
 class STPGGateway:
     def __init__(self, scorer: Scorer, tsa_threshold: float, pdg_min_delta: int,
                  enable_ppt=True, enable_tsa=True, enable_pdg=True, quarantine=False,
-                 gate_mode="attributed", grouping="lineage", inherit_read_trust=False):
+                 gate_mode="attributed", grouping="lineage", inherit_read_trust=False, second_scorer=None):
         self.scorer = scorer
+        # second_scorer (rev13, R2-1 round 2): witness of a second model family; a trusted lineage authorizes only if both
+        # witnesses give a verified target verdict (gate.apply_gate witness2).
+        self.second_scorer = second_scorer
         self.tsa_threshold = tsa_threshold
         self.pdg_min_delta = pdg_min_delta
         self.enable_ppt, self.enable_tsa, self.enable_pdg = enable_ppt, enable_tsa, enable_pdg
@@ -29,7 +32,7 @@ class STPGGateway:
         # 레코드 집합에서 파생되었음을 게이트웨이가 알면(ctx.read_min_trust), 쓰기의 출처 신뢰를 읽기 집합의 최솟값으로 낮춘다
         self.inherit_read_trust = inherit_read_trust
         self.timing = {"read_ms": [], "sink_ms": []}
-        self._witness_cache = {}; self._witness_raw = {}; self._raws_this_call = []
+        self._witness_cache = {}; self._witness_raw = {}; self._raws_this_call = []; self._witness2_cache = {}
 
     # --- PPT -----------------------------------------------------------------
     def on_write(self, record: dict, ctx) -> Provenance | None:
@@ -114,9 +117,16 @@ class STPGGateway:
                     self._witness_raw[key] = ""
             self._raws_this_call.append(self._witness_raw.get(key, ""))
             return self._witness_cache[key]
+        witness2 = None
+        if self.second_scorer is not None:
+            def witness2(recs, d):
+                key = (WITNESS_VERSION, tuple(sorted(r["record_id"] for r in recs)), d)
+                if key not in self._witness2_cache:
+                    self._witness2_cache[key] = self.second_scorer.targets(recs, d)
+                return self._witness2_cache[key]
         ok, reason, detect = G.apply_gate(dest, groups, ctx, witness=witness,
                                           empty_policy=("allow" if mode.endswith("-allow") else "block"),
-                                          untrusted_branch=(not mode.startswith("trusted-only")))
+                                          untrusted_branch=(not mode.startswith("trusted-only")), witness2=witness2)
         if detect is not None:
             detect["witness_raw"] = " || ".join(self._raws_this_call)
         self.timing["sink_ms"].append((time.perf_counter() - t0) * 1000.0)

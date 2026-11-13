@@ -1,0 +1,95 @@
+{
+  "files": {
+    "stpg/gateway/gate.py": "b4ddaed262fbf72271a4abc1df5c4a6d49565216dc00c41a7927dbce53a62133",
+    "stpg/gateway/binding.py": "4909facf485fe120530b33cbc3cef6c6e393d4725ad08e268573baaf9b54ba1b",
+    "stpg/gateway/stpg.py": "98b1aeaa0f43920bd894d90fc307eacdfcf0ed433776fea27069e4a0058d901e",
+    "stpg/gateway/scoring.py": "81dbe6a9080cd1b252909d684a55739b56deff97bfad8e307c2651edcd246ec2",
+    "stpg/gateway/baselines.py": "a98bc56484b0bab93e525eb6ad14ce99c0804b851cdefd323fd5715ffa668b4f",
+    "stpg/config.py": "b88414e7d260dab2c831a8892c602bc2ea4e0427883283b52f7ceda5a6a77405",
+    "stpg/datagen/unseen2.py": "8b7ec88eec2b9c97b507badc40a74e0f30ae142d0bee579dc19e2cb4ef5cda56",
+    "stpg/datagen/unseen.py": "f27dbf4b35b0c8dbd2df04dd37bc8d60490ef36abab39f5c3266032c589ed280",
+    "stpg/datagen/robust.py": "c474bc19f62226b9330e47f13ad7c180af90576020bfa696dc89aeafce347634",
+    "stpg/datagen/realistic.py": "11d5340c4a24bc79da29485edabed2ab9f5e393f121efc60961fe45483a1673a",
+    "stpg/datagen/generator.py": "cbe44dc54c9c838cdcf37d2d4005bb83296d1dfe878147aaa0f827e9b105fa11",
+    "scripts/gen_rev14_phrasings.py": "eea827a7803d566dcb1c3e44b5b7240eecb65550dcd3067b4e6f2be093e12029",
+    "scripts/s2_experiment.py": "f408849fd5093bd8fa069feb882240b3248c4759d67a3d085cfc27ac974e7e1d"
+  },
+  "kernel_version": "v3.5",
+  "witness_version": "w3-ab991312-mot200",
+  "witness_prompt_env": "w3",
+  "second_witness": "meta/llama-4-maverick-17b-128e-instruct-maas",
+  "agreement_rule": "a trusted lineage authorizes the destination only if the primary witness and the second witness both return a verdict that passes the support-path check (gate.apply_gate, witness2)",
+  "relation_extension": "STPG_RELATION_EXT=1 selects the extended pattern frozen in binding.py (hash above)",
+  "relation_extension_lines": [
+    "# post-hoc extension of the relation pattern M (rev12, evaluated separately from the frozen run; STPG_RELATION_EXT=1):",
+    "RELATION_EXT = bool(_os.environ.get(\"STPG_RELATION_EXT\"))",
+    "    if RELATION_EXT:",
+    "    if RELATION_EXT:",
+    "    if RELATION_EXT:"
+  ],
+  "policy": {
+    "v01_explicit_rule": {
+      "A": "pass"
+    },
+    "v02_arrangement": {
+      "A": "pass"
+    },
+    "v03_notice": {
+      "A": "block"
+    },
+    "v04_function_notice": {
+      "A": "block"
+    },
+    "v05_rule_plus_mention": {
+      "A": "pass"
+    },
+    "v06_key_trusted": {
+      "A": "pass"
+    },
+    "v07_key_untrusted": {
+      "X": "block"
+    },
+    "v08_key_missing": {
+      "A": "block"
+    },
+    "v09_key_conflict": {
+      "A": "block",
+      "X": "block"
+    },
+    "v10_chain2_trusted": {
+      "A": "pass"
+    },
+    "v11_chain2_poisoned": {
+      "X": "block"
+    },
+    "v12_attack_split": {
+      "SINK": "block"
+    }
+  },
+  "structures": [
+    "v01_explicit_rule",
+    "v02_arrangement",
+    "v03_notice",
+    "v04_function_notice",
+    "v05_rule_plus_mention",
+    "v06_key_trusted",
+    "v07_key_untrusted",
+    "v08_key_missing",
+    "v09_key_conflict",
+    "v10_chain2_trusted",
+    "v11_chain2_poisoned",
+    "v12_attack_split"
+  ],
+  "phrasing_keys": {
+    "attack_triples": 3,
+    "rules_direct": 3,
+    "arrangements": 3,
+    "notices": 3,
+    "function_notices": 3,
+    "rules_via_key": 2,
+    "sheets": 3,
+    "mentions": 2
+  },
+  "phrasings_file": "rev14_unseen2_phrasings.json",
+  "frozen_at": "2026-11-14T02:43:59+09:00"
+}
